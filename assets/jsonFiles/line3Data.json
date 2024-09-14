@@ -1,0 +1,147 @@
+[
+  {
+    "station": "عدلي منصور",
+    "latitude": 30.1234,
+    "longitude": 31.4567
+  },
+  {
+    "station": "الهايكستب",
+    "latitude": 30.2345,
+    "longitude": 31.5678
+  },
+  {
+    "station": "عمر بن الخطاب",
+    "latitude": 30.3456,
+    "longitude": 31.6789
+  },
+  {
+    "station": "قباء",
+    "latitude": 30.4567,
+    "longitude": 31.7890
+  },
+  {
+    "station": "هشام بركات",
+    "latitude": 30.5678,
+    "longitude": 31.8901
+  },
+  {
+    "station": "النزهة",
+    "latitude": 30.6789,
+    "longitude": 31.9012
+  },
+  {
+    "station": "نادي الشمس",
+    "latitude": 30.7890,
+    "longitude": 31.0123
+  },
+  {
+    "station": "ألف مسكن",
+    "latitude": 30.8901,
+    "longitude": 31.1234
+  },
+  {
+    "station": "ميدان هيليوبليس",
+    "latitude": 30.9012,
+    "longitude": 31.2345
+  },
+  {
+    "station": "هارون",
+    "latitude": 30.0123,
+    "longitude": 31.3456
+  },
+  {
+    "station": "الأهرام",
+    "latitude": 30.1234,
+    "longitude": 31.4567
+  },
+  {
+    "station": "كلية البنات",
+    "latitude": 30.2345,
+    "longitude": 31.5678
+  },
+  {
+    "station": "استاد القاهرة",
+    "latitude": 30.3456,
+    "longitude": 31.6789
+  },
+  {
+    "station": "المعرض",
+    "latitude": 30.4567,
+    "longitude": 31.7890
+  },
+  {
+    "station": "العباسية",
+    "latitude": 30.5678,
+    "longitude": 31.8901
+  },
+  {
+    "station": "عبده باشا",
+    "latitude": 30.6789,
+    "longitude": 31.9012
+  },
+  {
+    "station": "الجيش",
+    "latitude": 30.7890,
+    "longitude": 31.0123
+  },
+  {
+    "station": "باب الشعرية",
+    "latitude": 30.8901,
+    "longitude": 31.1234
+  },
+  {
+    "station": "ماسبيرو",
+    "latitude": 30.9012,
+    "longitude": 31.2345
+  },
+  {
+    "station": "صفاء حجازي",
+    "latitude": 30.0123,
+    "longitude": 31.3456
+  },
+  {
+    "station": "الكيت كات",
+    "latitude": 30.1234,
+    "longitude": 31.4567
+  },
+  {
+    "station": "السودان",
+    "latitude": 30.2345,
+    "longitude": 31.5678
+  },
+  {
+    "station": "إمبابة",
+    "latitude": 30.3456,
+    "longitude": 31.6789
+  },
+  {
+    "station": "البوهى",
+    "latitude": 30.4567,
+    "longitude": 31.7890
+  },
+  {
+    "station": "القومية العربية",
+    "latitude": 30.5678,
+    "longitude": 31.8901
+  },
+  {
+    "station": "الطريق الدائري",
+    "latitude": 30.6789,
+    "longitude": 31.9012
+  },
+  {
+    "station": "محور روض الفرج",
+    "latitude": 30.7890,
+    "longitude": 31.0123
+  },
+  {
+    "station": "العتبة",
+    "latitude": 30.8901,
+    "longitude": 31.1234
+  },
+  {
+    "station": "ناصر",
+    "latitude": 30.9012,
+    "longitude": 31.2345
+  }
+]
