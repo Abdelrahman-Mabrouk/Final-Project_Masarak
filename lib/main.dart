@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:masarak/AmrKhaled//bottomNavBar2.dart';
-import 'package:masarak/AmrKhaled//homePage.dart';
+import 'package:masarak/AmrKhaled/bottomNavBar2.dart';
+
 
 
 void main() {
