@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:masarak/AmrKhaled/bottomNavBar2.dart';
+
 
 
 void main() {
@@ -12,8 +14,12 @@ class MasarakApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-     // home: const MyHomePage(),
+      home: const Scaffold(
+        // body: Homepage(),
+        bottomNavigationBar: BottomNavBar2(),
+      ),
     );
   }
 }
