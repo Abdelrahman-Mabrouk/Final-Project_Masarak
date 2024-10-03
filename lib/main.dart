@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masarak/AmrKhaled/bottomNavBar2.dart';
+import 'package:masarak/tripDetails/tripDetails.dart';
+import 'package:masarak/AmrKhaled/homePage.dart';
 
 
 
@@ -17,10 +19,9 @@ class MasarakApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
       home: const Scaffold(
-        // body: Homepage(),
+         body: Homepage(),
         bottomNavigationBar: BottomNavBar2(),
       ),
     );
   }
 }
-
