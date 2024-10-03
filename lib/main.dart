@@ -3,6 +3,8 @@ import 'package:masarak/AmrKhaled/bottomNavBar2.dart';
 import 'package:masarak/tripDetails/tripDetails.dart';
 import 'package:masarak/AmrKhaled/homePage.dart';
 
+import 'Map/mainOfRouteAndMap.dart';
+
 
 
 void main() {
@@ -18,10 +20,7 @@ class MasarakApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      home: const Scaffold(
-         body: Homepage(),
-        bottomNavigationBar: BottomNavBar2(),
-      ),
+      home: RouteAndMapSection(),
     );
   }
 }
