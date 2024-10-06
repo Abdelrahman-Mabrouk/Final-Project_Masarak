@@ -14,10 +14,8 @@ class NearestStation {
     Position position = await determinePosition();
     double userLat = position.latitude;
     double userLon = position.longitude;
-
-    final String response = await rootBundle.loadString('assets/jsonFiles/metroLinesData.json');
-    final Map<String, dynamic> jsonData = json.decode(response);
-    final List<dynamic> stationData = jsonData['stations'];
+   String data = await rootBundle.loadString('assets/jsonFiles/metroLinesData.json');
+    final List<dynamic> stationData = json.decode(data);
 
     double shortestDistanceSquared = double.infinity;
 
