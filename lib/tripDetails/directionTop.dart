@@ -8,7 +8,7 @@ class DirectionTop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 150,
+      height: 120,
       color: Color.fromARGB(255, 2, 11, 80),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
