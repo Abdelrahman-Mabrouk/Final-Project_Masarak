@@ -125,7 +125,7 @@ class _TripDetailsState extends State<TripDetails> {
                                   ],
                                 ),
                                 child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {_showFullScreenStations(context);},
                                   icon: Icon(CupertinoIcons
                                       .arrow_up_left_arrow_down_right),
                                   color: Colors.orange,
@@ -203,6 +203,7 @@ class _TripDetailsState extends State<TripDetails> {
                                         ),
                                         Container(
                                           width: 40,
+                                          height: (widget.metroRouteFinder!.routeStations.length * 50.0),
                                           decoration: BoxDecoration(
                                             color:
                                                 Color.fromARGB(255, 2, 11, 80),
@@ -401,7 +402,7 @@ class _TripDetailsState extends State<TripDetails> {
                                                     width: 40,
                                                     decoration: BoxDecoration(
                                                       color: Color.fromARGB(
-                                                          255, 2, 11, 80),
+                                                          255, 255, 7, 7),
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               25),
@@ -461,4 +462,70 @@ class _TripDetailsState extends State<TripDetails> {
             ),
           );
   }
-}
+    void _showFullScreenStations(BuildContext context) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true, // يجعل الشاشة قابلة للتمرير
+        builder: (BuildContext context) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.9, // ارتفاع النافذة
+            width: MediaQuery.of(context).size.width, // عرض كامل الشاشة
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: widget.metroRouteFinder!.routeStations.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: Text(
+                          widget.metroRouteFinder!.routeStations[index],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  width: 50, // زيادة عرض العمود
+                  height: (widget.metroRouteFinder!.routeStations.length * 50.0),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 2, 11, 80),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: List.generate(2, (index) =>
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.circle,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ),
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.train_outlined,
+                  color: Colors.black,
+                  size: 45,
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+  }
+
