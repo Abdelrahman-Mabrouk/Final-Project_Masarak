@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:masarak/AmrKhaled//bottomNavBar2.dart';
+import 'package:masarak/StartScreenAndNavBar/bottomNavBar2.dart';
 
 import 'package:masarak/metroLines/metrolines.dart';
+import 'package:masarak/setting/setting.dart';
+
+import '../tripDetails/directionTop.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -60,10 +63,10 @@ class Homepage extends StatelessWidget {
           ),
             child: ElevatedButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => const MetroLines()), // Replace with the path to your Home widget
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MetroLines()), // Replace with the path to your Home widget
+                );
               },
             
               style: ElevatedButton.styleFrom(

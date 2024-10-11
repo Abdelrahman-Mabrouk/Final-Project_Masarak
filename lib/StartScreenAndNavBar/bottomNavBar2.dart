@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:masarak/AmrKhaled//bottomNavBar.dart';
-import 'package:masarak/AmrKhaled/NavBarText.dart';
+import 'package:masarak/StartScreenAndNavBar/bottomNavBar.dart';
+import 'package:masarak/StartScreenAndNavBar/NavBarText.dart';
 
 class BottomNavBar2 extends StatefulWidget {
-  const BottomNavBar2({super.key});
-
+  const BottomNavBar2({super.key, required this.index});
+  final int index;
   @override
   State<BottomNavBar2> createState() => _BottomNavBar2State();
 }
 
 class _BottomNavBar2State extends State<BottomNavBar2> {
+  late int index = 2 ;
+
+  @override
+  void initState() {
+    super.initState();
+    index = widget.index; // Correct way to initialize the index
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -32,7 +39,7 @@ class _BottomNavBar2State extends State<BottomNavBar2> {
             child: NavBarText()
           )
         ),
-        const BottomNavBar(),
+        BottomNavBar(index: index),
     ]);
     
   }

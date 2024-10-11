@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
-
+  const BottomNavBar({super.key , required this.index});
+  final int index;
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int currentIndex = 2;
+  late int currentIndex;
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.index -1; // Correct way to initialize the index
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +28,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
           onTap: (index) {
             setState(() {
               currentIndex = index;
-              //if index = value ,got the selected index page
+              // if index = value ,got the selected index page
+              if(currentIndex == 0){
+                Navigator.pushNamed(context, '/pagetest1');
+              }
+              if(currentIndex == 1){
+                Navigator.pushNamed(context, '/pagetest2');
+              }
+              if(currentIndex == 2){
+                Navigator.pushNamed(context, '/pagetest3');
+              }
+              if(currentIndex == 3){
+                Navigator.pushNamed(context, '/pagetest4');
+              }
+              if(currentIndex == 4){
+                Navigator.pushNamed(context, '/pagetest5');
+              }
             });
           },
           backgroundColor: const Color.fromARGB(255,254,139,0),
