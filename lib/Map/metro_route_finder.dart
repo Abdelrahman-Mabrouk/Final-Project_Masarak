@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/services.dart';
 
 
@@ -6,13 +7,24 @@ class MetroRouteFinder  {
   List stations = [];
   String? startStation;
   String? endStation;
-  List<String> routeStations = [];
+  String? nameOftransferStation;
+  int? startLine;
+  int? endLine;
+  List<String> routeStations1 = [];
+  List<String> routeStations2 = [];
   Map<String, List<int>> transferStations = {
     'العتبة': [2, 3],
     'الشهداء': [1, 2],
     'ناصر': [1, 3],
     'السادات': [1, 2]
   };
+  Map <int , String> nameOfLines={
+    1:"الخط الاول (حلوان, المرج الجديدة)",
+    2:"الخط الثاني (المنيب , شبرا)",
+    3:"الخط الثالث (عدلي منصور , محور روض الفرج)"
+  };
+  bool isTransferStation = false;
+
 
   MetroRouteFinder(){
     loadStations();
@@ -25,11 +37,10 @@ class MetroRouteFinder  {
   }
 
   // دالة لحساب المحطات بين خطين
-  List<String> getStationsBetween(String start, String end) {
+  void getStationsBetween(String start, String end) {
     List<String> result = [];
 
-    int? startLine;
-    int? endLine;
+
 
     // تحديد الخطين للمحطتين
     for (var station in stations) {
@@ -38,7 +49,7 @@ class MetroRouteFinder  {
     }
 
     if (startLine == endLine) {
-      return getStationsBetweenSameLine(start, end, startLine!);
+      routeStations1 = getStationsBetweenSameLine(start, end, startLine!);
     }
 
     // البحث عن محطة تحويل بين الخطين
@@ -51,11 +62,12 @@ class MetroRouteFinder  {
     }
 
     if (transferStation != null) {
-      result.addAll(getStationsBetweenSameLine(start, transferStation, startLine!));
-      result.addAll(getStationsBetweenSameLine(end,transferStation,  endLine!));
+      isTransferStation = true;
+      nameOftransferStation = transferStation;
+      routeStations1.addAll(getStationsBetweenSameLine(start, transferStation, startLine!));
+      routeStations2.addAll(getStationsBetweenSameLine(end,transferStation,  endLine!));
     }
 
-    return result;
   }
 
   // دالة لحساب المحطات بين محطتين على نفس الخط
@@ -75,7 +87,7 @@ class MetroRouteFinder  {
         }
       }
     }
-    if(result[0]==endStation){result= result.reversed.toList();result.removeAt(0);}
+    if(result[0]==endStation){result= result.reversed.toList();}
 
 
     return result;
