@@ -18,8 +18,8 @@ class TripDetails extends StatefulWidget {
 
 class _TripDetailsState extends State<TripDetails> {
   final bool noDirection = false;
-  final bool transDirection = false;
   late List<Map<dynamic, dynamic>> data;
+  late int ? numberOfStation = widget.metroRouteFinder!.routeStations1.length + widget.metroRouteFinder!.routeStations2.length;
 
   // this. startStation,
   // this.endStation,
@@ -57,17 +57,19 @@ class _TripDetailsState extends State<TripDetails> {
                                 textDesc: "السعر",
                                 iconDesc: Icons.money,
                                 classDetail: "جنيها",
-                                classNum: "20"),
+                                classNum: (numberOfStation!>23)?"20":(numberOfStation!>=17 && numberOfStation!<=23)?"15":(numberOfStation!>=10 && numberOfStation!<=16)?"10":"8"
+                            ),
                             DetailsCard(
                                 textDesc: "المحطات",
                                 iconDesc: CupertinoIcons.tram_fill,
                                 classDetail: "محطة",
-                                classNum: "15"),
+                                classNum: "${numberOfStation}"),
                             DetailsCard(
                                 textDesc: "الوقت",
                                 iconDesc: CupertinoIcons.clock,
                                 classDetail: "دقيقة",
-                                classNum: "30")
+                                classNum:  "${(numberOfStation)!*2}"
+                            )
                           ],
                         ),
                         SizedBox(height: 10),
@@ -87,7 +89,7 @@ class _TripDetailsState extends State<TripDetails> {
                                       color: Colors.grey,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 27)),
-                              Text("هتركب المترو و بلا بلا",
+                              Text("هتركب المترو وتركب محطة ${(widget.metroRouteFinder!.isTransferStation)?(" وهتنزل محطة ${widget.metroRouteFinder!.nameOftransferStation} عشان تحول للخط ${widget.metroRouteFinder!.endLine} ولما تركب من هناك خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} و يبق كد حمدلله علي سلامتك ") :  "و خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} ويبق كد حمدلله علي سلامتك "} ${widget.metroRouteFinder!.startStation}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -165,7 +167,7 @@ class _TripDetailsState extends State<TripDetails> {
                                 child: Column(
                                   children: [
                                     Text(
-                                        "اتجاه عدلي منصور (السلام) - الخط الثالث",
+                                        "${widget.metroRouteFinder!.nameOfLines[widget.metroRouteFinder!.startLine]}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 25)),
@@ -182,7 +184,7 @@ class _TripDetailsState extends State<TripDetails> {
                                             shrinkWrap: true,
                                             padding: const EdgeInsets.all(8.0),
                                             itemCount: widget.metroRouteFinder!
-                                                .routeStations.length,
+                                                .routeStations1.length,
                                             itemBuilder: (context, index) {
                                               return Padding(
                                                 padding:
@@ -190,7 +192,7 @@ class _TripDetailsState extends State<TripDetails> {
                                                         vertical: 4.0),
                                                 child: Text(
                                                   widget.metroRouteFinder!
-                                                      .routeStations[index],
+                                                      .routeStations1[index],
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -203,7 +205,7 @@ class _TripDetailsState extends State<TripDetails> {
                                         ),
                                         Container(
                                           width: 40,
-                                          height: (widget.metroRouteFinder!.routeStations.length * 50.0),
+                                          height: (widget.metroRouteFinder!.routeStations1.length * 50.0),
                                           decoration: BoxDecoration(
                                             color:
                                                 Color.fromARGB(255, 2, 11, 80),
@@ -248,7 +250,8 @@ class _TripDetailsState extends State<TripDetails> {
                                 ),
                               ),
                             ),
-                            transDirection
+ // ---------------------------------------------------------------------------------------------------------------------------
+                            widget.metroRouteFinder!.isTransferStation
                                 ? Column(
                                     children: [
                                       Padding(
@@ -347,7 +350,7 @@ class _TripDetailsState extends State<TripDetails> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                  "اتجاه عدلي منصور (السلام) - الخط الثالث",
+                                                  "${widget.metroRouteFinder!.nameOfLines[widget.metroRouteFinder!.endLine]}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -372,7 +375,7 @@ class _TripDetailsState extends State<TripDetails> {
                                                               8.0),
                                                       itemCount: widget
                                                           .metroRouteFinder!
-                                                          .routeStations
+                                                          .routeStations2
                                                           .length,
                                                       itemBuilder:
                                                           (context, index) {
@@ -384,7 +387,7 @@ class _TripDetailsState extends State<TripDetails> {
                                                                       4.0),
                                                           child: Text(
                                                             widget.metroRouteFinder!
-                                                                    .routeStations[
+                                                                    .routeStations2[
                                                                 index],
                                                             style: TextStyle(
                                                                 fontWeight:
@@ -400,9 +403,9 @@ class _TripDetailsState extends State<TripDetails> {
                                                   ),
                                                   Container(
                                                     width: 40,
+                                                    height: (widget.metroRouteFinder!.routeStations1.length * 50.0),
                                                     decoration: BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 255, 7, 7),
+                                                      color:Color.fromARGB(255, 2, 11, 80),
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               25),
@@ -470,58 +473,308 @@ class _TripDetailsState extends State<TripDetails> {
           return Container(
             height: MediaQuery.of(context).size.height * 0.9, // ارتفاع النافذة
             width: MediaQuery.of(context).size.width, // عرض كامل الشاشة
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            child:
+            ListView(
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(8.0),
-                    itemCount: widget.metroRouteFinder!.routeStations.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text(
-                          widget.metroRouteFinder!.routeStations[index],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                          ),
-                          textAlign: TextAlign.right,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  width: 50, // زيادة عرض العمود
-                  height: (widget.metroRouteFinder!.routeStations.length * 50.0),
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 2, 11, 80),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: List.generate(2, (index) =>
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                        ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(25)),
+                    child: Column(
+                      children: [
+                        Text(
+                            "اتجاه عدلي منصور (السلام) - الخط الثالث",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25)),
+                        Divider(
+                            thickness: 3,
+                            indent: 10,
+                            endIndent: 10,
+                            color: Colors.black.withOpacity(0.1)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.all(8.0),
+                                itemCount: widget.metroRouteFinder!
+                                    .routeStations1.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                    const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      widget.metroRouteFinder!
+                                          .routeStations1[index],
+                                      style: TextStyle(
+                                          fontWeight:
+                                          FontWeight.bold,
+                                          fontSize: 25),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            Container(
+                              width: 40,
+                              height: (widget.metroRouteFinder!.routeStations1.length * 50.0),
+                              decoration: BoxDecoration(
+                                color:
+                                Color.fromARGB(255, 2, 11, 80),
+                                borderRadius:
+                                BorderRadius.circular(25),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.circle,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.circle,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.train_outlined,
+                              color: Colors.black,
+                              size: 45,
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
                 ),
-                Icon(
-                  Icons.train_outlined,
-                  color: Colors.black,
-                  size: 45,
-                ),
+                widget.metroRouteFinder!.isTransferStation
+                    ? Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius:
+                          BorderRadius.circular(25),
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              "هتحول الاتجاه",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                              ),
+                            ),
+                            Divider(
+                              thickness: 3,
+                              indent: 10,
+                              endIndent: 10,
+                              color: Colors.black
+                                  .withOpacity(0.1),
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.end,
+                              children: [
+                                Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceEvenly,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets
+                                          .all(10.0),
+                                      child: Text(
+                                        "هتمشي 4 دقائق, 100 متر",
+                                        style: TextStyle(
+                                            fontSize: 25),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceEvenly,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment
+                                      .center,
+                                  children: [
+                                    Icon(Icons.circle,
+                                        size: 8),
+                                    SizedBox(height: 10),
+                                    Icon(Icons.circle,
+                                        size: 8),
+                                    SizedBox(height: 10),
+                                    Icon(Icons.circle,
+                                        size: 8),
+                                    SizedBox(height: 10),
+                                    Icon(Icons.circle,
+                                        size: 8),
+                                    SizedBox(height: 10),
+                                    Icon(Icons.circle,
+                                        size: 8),
+                                  ],
+                                ),
+                                Icon(
+                                  Icons
+                                      .directions_walk_outlined,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color:
+                            Colors.grey.withOpacity(0.1),
+                            borderRadius:
+                            BorderRadius.circular(25)),
+                        child: Column(
+                          children: [
+                            Text(
+                                "${widget.metroRouteFinder!.nameOfLines[widget.metroRouteFinder!.endLine]}",
+                                style: TextStyle(
+                                    fontWeight:
+                                    FontWeight.bold,
+                                    fontSize: 25)),
+                            Divider(
+                                thickness: 3,
+                                indent: 10,
+                                endIndent: 10,
+                                color: Colors.black
+                                    .withOpacity(0.1)),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                    NeverScrollableScrollPhysics(),
+                                    padding:
+                                    const EdgeInsets.all(
+                                        8.0),
+                                    itemCount: widget
+                                        .metroRouteFinder!
+                                        .routeStations2
+                                        .length,
+                                    itemBuilder:
+                                        (context, index) {
+                                      return Padding(
+                                        padding:
+                                        const EdgeInsets
+                                            .symmetric(
+                                            vertical:
+                                            4.0),
+                                        child: Text(
+                                          widget.metroRouteFinder!
+                                              .routeStations2[
+                                          index],
+                                          style: TextStyle(
+                                              fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                              fontSize: 25),
+                                          textAlign:
+                                          TextAlign.right,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  width: 40,
+                                  height: (widget.metroRouteFinder!.routeStations1.length * 50.0),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 2, 11, 80),
+                                    borderRadius:
+                                    BorderRadius.circular(
+                                        25),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment
+                                        .center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets
+                                            .all(8.0),
+                                        child: Icon(
+                                          Icons.circle,
+                                          color: Colors.white,
+                                          size: 25,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets
+                                            .all(8.0),
+                                        child: Icon(
+                                          Icons.circle,
+                                          color: Colors.white,
+                                          size: 25,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.train_outlined,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+                    : Container(),
               ],
-            ),
+            )
           );
         },
       );
