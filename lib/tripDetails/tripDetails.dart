@@ -6,18 +6,18 @@ import 'package:masarak/tripDetails/directionTop.dart';
 import 'package:masarak/tripDetails/noDirection.dart';
 
 import '../Map/metro_route_finder.dart';
+import '../StartScreenAndNavBar/bottomNavBar2.dart';
 
 class TripDetails extends StatefulWidget {
   final MetroRouteFinder? metroRouteFinder;
 
-  const TripDetails({super.key, required this.metroRouteFinder});
+  const TripDetails({super.key,  this.metroRouteFinder});
 
   @override
   State<TripDetails> createState() => _TripDetailsState();
 }
 
 class _TripDetailsState extends State<TripDetails> {
-  final bool noDirection = false;
   late List<Map<dynamic, dynamic>> data;
   late int ? numberOfStation = widget.metroRouteFinder!.routeStations1.length + widget.metroRouteFinder!.routeStations2.length;
 
@@ -28,14 +28,17 @@ class _TripDetailsState extends State<TripDetails> {
   @override
   void initState() {
     super.initState();
+    // print("----------------------------------------------------------");
+    // print(widget.metroRouteFinder!.isTransferStation);
   }
 
   @override
   Widget build(BuildContext context) {
-    return noDirection
+    return (widget.metroRouteFinder == null)
         ? NoDirection()
         : Scaffold(
-            appBar: AppBar(backgroundColor: Color.fromARGB(255, 2, 11, 80)),
+      bottomNavigationBar: BottomNavBar2(index: 2),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 2, 11, 80)),
             backgroundColor: Color.fromARGB(255, 248, 248, 230),
             body: SingleChildScrollView(
               child: Column(
@@ -251,7 +254,7 @@ class _TripDetailsState extends State<TripDetails> {
                               ),
                             ),
  // ---------------------------------------------------------------------------------------------------------------------------
-                            widget.metroRouteFinder!.isTransferStation
+                             widget.metroRouteFinder!.isTransferStation
                                 ? Column(
                                     children: [
                                       Padding(
@@ -259,143 +262,42 @@ class _TripDetailsState extends State<TripDetails> {
                                         child: Container(
                                           width: double.infinity,
                                           decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.1),
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "هتحول الاتجاه",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25,
-                                                ),
-                                              ),
-                                              Divider(
-                                                thickness: 3,
-                                                indent: 10,
-                                                endIndent: 10,
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10.0),
-                                                        child: Text(
-                                                          "هتمشي 4 دقائق, 100 متر",
-                                                          style: TextStyle(
-                                                              fontSize: 25),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(Icons.circle,
-                                                          size: 8),
-                                                      SizedBox(height: 10),
-                                                      Icon(Icons.circle,
-                                                          size: 8),
-                                                      SizedBox(height: 10),
-                                                      Icon(Icons.circle,
-                                                          size: 8),
-                                                      SizedBox(height: 10),
-                                                      Icon(Icons.circle,
-                                                          size: 8),
-                                                      SizedBox(height: 10),
-                                                      Icon(Icons.circle,
-                                                          size: 8),
-                                                    ],
-                                                  ),
-                                                  Icon(
-                                                    Icons
-                                                        .directions_walk_outlined,
-                                                    color: Colors.black,
-                                                    size: 45,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.grey.withOpacity(0.1),
-                                              borderRadius:
-                                                  BorderRadius.circular(25)),
+                                              color: Colors.grey.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(25)),
                                           child: Column(
                                             children: [
                                               Text(
                                                   "${widget.metroRouteFinder!.nameOfLines[widget.metroRouteFinder!.endLine]}",
                                                   style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 25)),
                                               Divider(
                                                   thickness: 3,
                                                   indent: 10,
                                                   endIndent: 10,
-                                                  color: Colors.black
-                                                      .withOpacity(0.1)),
+                                                  color: Colors.black.withOpacity(0.1)),
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
+                                                mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
                                                   Expanded(
                                                     child: ListView.builder(
                                                       shrinkWrap: true,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      itemCount: widget
-                                                          .metroRouteFinder!
-                                                          .routeStations2
-                                                          .length,
-                                                      itemBuilder:
-                                                          (context, index) {
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      itemCount: widget.metroRouteFinder!
+                                                          .routeStations2.length,
+                                                      itemBuilder: (context, index) {
                                                         return Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical:
-                                                                      4.0),
+                                                          const EdgeInsets.symmetric(
+                                                              vertical: 4.0),
                                                           child: Text(
                                                             widget.metroRouteFinder!
-                                                                    .routeStations2[
-                                                                index],
+                                                                .routeStations2[index],
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                FontWeight.bold,
                                                                 fontSize: 25),
-                                                            textAlign:
-                                                                TextAlign.right,
+                                                            textAlign: TextAlign.right,
                                                           ),
                                                         );
                                                       },
@@ -403,25 +305,22 @@ class _TripDetailsState extends State<TripDetails> {
                                                   ),
                                                   Container(
                                                     width: 40,
-                                                    height: (widget.metroRouteFinder!.routeStations1.length * 50.0),
+                                                    height: (widget.metroRouteFinder!.routeStations2.length * 50.0),
                                                     decoration: BoxDecoration(
-                                                      color:Color.fromARGB(255, 2, 11, 80),
+                                                      color:
+                                                      Color.fromARGB(255, 2, 11, 80),
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              25),
+                                                      BorderRadius.circular(25),
                                                     ),
                                                     child: Column(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      MainAxisAlignment.spaceBetween,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
+                                                      CrossAxisAlignment.center,
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                          const EdgeInsets.all(8.0),
                                                           child: Icon(
                                                             Icons.circle,
                                                             color: Colors.white,
@@ -430,8 +329,7 @@ class _TripDetailsState extends State<TripDetails> {
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                          const EdgeInsets.all(8.0),
                                                           child: Icon(
                                                             Icons.circle,
                                                             color: Colors.white,

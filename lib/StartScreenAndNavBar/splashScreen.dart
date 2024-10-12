@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:masarak/StartScreenAndNavBar/bottomNavBar2.dart';
+import 'package:masarak/homePage/homePage.dart';
 
-import 'package:masarak/metroLines/metrolines.dart';
-import 'package:masarak/setting/setting.dart';
 
-import '../tripDetails/directionTop.dart';
-
-class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+class Splashscreen extends StatelessWidget {
+  const Splashscreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +42,7 @@ class Homepage extends StatelessWidget {
           right: MediaQuery.of(context).size.width * 0.25,
           child: Container(
           decoration: BoxDecoration(
-            boxShadow: 
+            boxShadow:
             const [BoxShadow(
               color: Colors.orange,
               blurRadius: 10,
@@ -63,12 +59,12 @@ class Homepage extends StatelessWidget {
           ),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const MetroLines()), // Replace with the path to your Home widget
+                  MaterialPageRoute(builder: (context) =>  homePage()),
                 );
               },
-            
+
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,

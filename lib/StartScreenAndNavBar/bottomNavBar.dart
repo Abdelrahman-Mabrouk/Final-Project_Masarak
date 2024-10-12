@@ -30,19 +30,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
               currentIndex = index;
               // if index = value ,got the selected index page
               if(currentIndex == 0){
-                Navigator.pushNamed(context, '/pagetest1');
+                Navigator.pushReplacementNamed(context, '/Setting');
               }
               if(currentIndex == 1){
-                Navigator.pushNamed(context, '/pagetest2');
+                Navigator.pushReplacementNamed(context, '/TripDetails');
               }
               if(currentIndex == 2){
-                Navigator.pushNamed(context, '/pagetest3');
+                Navigator.pushReplacementNamed(context, '/homePage');
               }
               if(currentIndex == 3){
-                Navigator.pushNamed(context, '/pagetest4');
+                Navigator.pushReplacementNamed(context, '/MetroLines');
               }
               if(currentIndex == 4){
-                Navigator.pushNamed(context, '/pagetest5');
+                Navigator.pushReplacementNamed(context, '/TicketPrice');
               }
             });
           },

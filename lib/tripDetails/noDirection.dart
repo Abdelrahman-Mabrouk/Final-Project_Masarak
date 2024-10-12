@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:masarak/homePage/homePage.dart';
+
+import '../StartScreenAndNavBar/bottomNavBar2.dart';
 
 class NoDirection extends StatelessWidget {
   const NoDirection({super.key});
@@ -6,6 +9,7 @@ class NoDirection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavBar2(index: 2),
       backgroundColor: Color.fromARGB(255, 248, 248, 230),
       body:
       Column(
@@ -54,7 +58,14 @@ class NoDirection extends StatelessWidget {
                               style: FilledButton.styleFrom(
                                   backgroundColor: Color.fromARGB(255, 253, 147, 45)
                               ),
-                              onPressed: (){},
+                              onPressed: (){
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => homePage(),
+                                  ),
+                                );
+                              },
                               child: Text("روح اختار", style: TextStyle(color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold),)),
                         ),
                       )
