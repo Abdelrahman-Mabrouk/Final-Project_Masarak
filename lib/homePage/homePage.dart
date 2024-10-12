@@ -1,7 +1,7 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import '../Map/metro_route_finder.dart';
-import '../StartScreenAndNavBar/bottomNavBar2.dart';
+import '../tripDetails/tripDetails.dart';
+import '../Map/metro_route_finder.dart';
 import '../tripDetails/tripDetails.dart';
 
 class homePage extends StatefulWidget {
@@ -10,99 +10,55 @@ class homePage extends StatefulWidget {
 }
 
 class _homePage extends State<homePage> {
-  MetroRouteFinder routeFinder = MetroRouteFinder();
+  MetroRouteFinder routeFinder = MetroRouteFinder(); // إنشاء نسخة من كلاس MetroRouteFinder
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    routeFinder.loadStations();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Metro Route Finder'),
       ),
-      bottomNavigationBar: BottomNavBar2(index: 3),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Dropdown for selecting the start station with search functionality
-            DropdownSearch<String>(
-              items: routeFinder.stationsname.toList(),
-              // تحويل Set إلى List
-              dropdownDecoratorProps: DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-                  labelText: "اختر محطة البداية",
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              selectedItem: routeFinder.startStation,
-              popupProps: PopupProps.menu(
-                showSearchBox: true, // تفعيل البحث
-                searchFieldProps: TextFieldProps(
-                  autofocus: true, // لتفعيل البحث مباشرة عند فتح القائمة
-                ),
-              ),
-              filterFn: (station, filter) =>
-                  station.toLowerCase().contains(filter.toLowerCase()),
-              onChanged: (String? newValue) {
+            DropdownButton<String>(
+              hint: Text("اختر محطة البداية"),
+              value: routeFinder.startStation,
+              onChanged: (newValue) {
                 setState(() {
-                  routeFinder.startStation = newValue; // تحديث محطة البداية
+                  routeFinder.startStation = newValue;
+
                 });
               },
+              items: routeFinder.stations.map<DropdownMenuItem<String>>((station) {
+                return DropdownMenuItem<String>(
+                  value: station['name'],  // تعديل المفتاح إلى 'name'
+                  child: Text(station['name']),  // تعديل المفتاح إلى 'name'
+                );
+              }).toList(),
             ),
 
-            SizedBox(height: 20), // إضافة مسافة بين القائمتين
-
-            // Dropdown for selecting the end station with search functionality
-            DropdownSearch<String>(
-              items: routeFinder.stationsname.toList(),
-              // تحويل Set إلى List
-              dropdownDecoratorProps: DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-                  labelText: "اختر محطة الوصول",
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              selectedItem: routeFinder.endStation,
-              popupProps: PopupProps.menu(
-                showSearchBox: true, // تفعيل البحث
-                searchFieldProps: TextFieldProps(
-                  autofocus: true, // لتفعيل البحث مباشرة عند فتح القائمة
-                ),
-              ),
-              filterFn: (station, filter) =>
-                  station.toLowerCase().contains(filter.toLowerCase()),
-              onChanged: (String? newValue) {
+            DropdownButton<String>(
+              hint: Text("اختر محطة الوصول"),
+              value: routeFinder.endStation,
+              onChanged: (newValue) {
                 setState(() {
-                  routeFinder.endStation = newValue; // تحديث محطة الوصول
+                  routeFinder.endStation = newValue;
                 });
               },
-            ),
-
-            SizedBox(height: 20), // إضافة مسافة
-
-            // عرض النتائج المختارة لمحطة البداية والنهاية
-            Text(
-              'محطة البداية: ${routeFinder.startStation ?? "لم يتم الاختيار"}',
-              style: TextStyle(fontSize: 16),
-            ),
-            Text(
-              'محطة الوصول: ${routeFinder.endStation ?? "لم يتم الاختيار"}',
-              style: TextStyle(fontSize: 16),
+              items: routeFinder.stations.map<DropdownMenuItem<String>>((station) {
+                return DropdownMenuItem<String>(
+                  value: station['name'],  // تعديل المفتاح إلى 'name'
+                  child: Text(station['name']),  // تعديل المفتاح إلى 'name'
+                );
+              }).toList(),
             ),
 
             ElevatedButton(
               onPressed: () {
-                if (routeFinder.startStation != null &&
-                    routeFinder.endStation != null) {
+                if (routeFinder.startStation != null && routeFinder.endStation != null) {
                   if (routeFinder.startStation == routeFinder.endStation) {
                     // عرض رسالة خطأ إذا كانت محطة البداية هي نفسها محطة النهاية
                     showDialog(
@@ -110,8 +66,7 @@ class _homePage extends State<homePage> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text("خطأ"),
-                          content: Text(
-                              "محطة البداية لا يمكن أن تكون هي نفسها محطة النهاية!"),
+                          content: Text("محطة البداية لا يمكن أن تكون هي نفسها محطة النهاية!"),
                           actions: <Widget>[
                             TextButton(
                               child: Text("حسناً"),
@@ -125,18 +80,17 @@ class _homePage extends State<homePage> {
                     );
                   } else {
                     // حساب المسار
-                    routeFinder.getStationsBetween(
-                        routeFinder.startStation!, routeFinder.endStation!);
+                    routeFinder.routeStations = routeFinder.getStationsBetween(routeFinder.startStation!, routeFinder.endStation!);
 
                     // الانتقال إلى صفحة عرض التفاصيل
-                    print(
-                        "-------------------routeFinder.startStation----------------------------");
+                    print("-------------------routeFinder.startStation----------------------------");
                     print(routeFinder.startStation);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => TripDetails(
                           metroRouteFinder: routeFinder,
+
                         ),
                       ),
                     );
@@ -148,8 +102,7 @@ class _homePage extends State<homePage> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text("خطأ"),
-                        content:
-                            Text("يرجى اختيار محطة البداية ومحطة النهاية!"),
+                        content: Text("يرجى اختيار محطة البداية ومحطة النهاية!"),
                         actions: <Widget>[
                           TextButton(
                             child: Text("حسناً"),
