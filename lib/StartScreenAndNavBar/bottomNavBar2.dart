@@ -39,7 +39,8 @@ class _BottomNavBar2State extends State<BottomNavBar2> {
             child: NavBarText()
           )
         ),
-        BottomNavBar(index: index),
+        Directionality(textDirection: TextDirection.ltr,
+        child: BottomNavBar(index: index)),
     ]);
     
   }

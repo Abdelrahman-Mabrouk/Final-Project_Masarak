@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:masarak/homePage/homePage.dart';
+import 'package:masarak/metroLines/lines.dart';
+import 'package:masarak/ticketPrice/ticketPrice.dart';
+import 'package:masarak/tripDetails/tripDetails.dart';
 
 import 'presentation/settings_view.dart';
 
@@ -10,22 +14,28 @@ class Setting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
 
         // Set Arabic as the only locale
-        locale: Locale('ar'),
-        supportedLocales: [
+        locale: const Locale('ar'),
+        supportedLocales: const [
           Locale('ar'),
           Locale('en'),
         ],
-        localizationsDelegates: [
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        home: SettingsView()
-
+        home: const SettingsView(),
+        routes: {
+          '/Setting': (context) => Setting(),
+          '/TripDetails': (context) => TripDetails(metroRouteFinder: null,),
+          '/homePage': (context) => homePage(),
+          '/MetroLines': (context) => LinePage(),
+          '/TicketPrice': (context) => TicketPrice(),
+      },
     );
   }
 }

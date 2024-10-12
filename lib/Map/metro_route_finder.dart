@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 class MetroRouteFinder  {
   List stations = [];
+  Set <String> stationsname = {};
   String? startStation;
   String? endStation;
   String? nameOftransferStation;
@@ -34,12 +35,18 @@ class MetroRouteFinder  {
     String data = await rootBundle.loadString('assets/jsonFiles/metroLinesData.json');
 
     stations = jsonDecode(data);
+    for(var station in stations){
+      stationsname.add(station['name']);
+    }
   }
+
 
   // دالة لحساب المحطات بين خطين
   void getStationsBetween(String start, String end) {
+    routeStations1.clear();
+    routeStations2.clear();
+    isTransferStation = false;
     List<String> result = [];
-
 
 
     // تحديد الخطين للمحطتين
@@ -50,31 +57,32 @@ class MetroRouteFinder  {
 
     if (startLine == endLine) {
       routeStations1 = getStationsBetweenSameLine(start, end, startLine!);
-    }
+    } else {
+      // البحث عن محطة تحويل بين الخطين
+      String? transferStation;
+      for (var entry in transferStations.entries) {
+        if (entry.value.contains(startLine) && entry.value.contains(endLine)) {
+          transferStation = entry.key; // محطة التحويل التي تحتوي على الخطين
+          break;
+        }
+      }
 
-    // البحث عن محطة تحويل بين الخطين
-    String? transferStation;
-    for (var entry in transferStations.entries) {
-      if (entry.value.contains(startLine) && entry.value.contains(endLine)) {
-        transferStation = entry.key; // محطة التحويل التي تحتوي على الخطين
-        break;
+      if (transferStation != null) {
+        isTransferStation = true;
+        nameOftransferStation = transferStation;
+        routeStations1.addAll(
+            getStationsBetweenSameLine(start, transferStation, startLine!));
+        routeStations2.addAll(
+            getStationsBetweenSameLine(end, transferStation, endLine!));
       }
     }
-
-    if (transferStation != null) {
-      isTransferStation = true;
-      nameOftransferStation = transferStation;
-      routeStations1.addAll(getStationsBetweenSameLine(start, transferStation, startLine!));
-      routeStations2.addAll(getStationsBetweenSameLine(end,transferStation,  endLine!));
-    }
-
   }
 
   // دالة لحساب المحطات بين محطتين على نفس الخط
   List<String> getStationsBetweenSameLine(String start, String end, int line) {
+
     List<String> result = [];
     bool inRange = false;
-
     for (var station in stations) {
       if (station['line'] == line) {
         if (station['name'] == start || station['name'] == end) {

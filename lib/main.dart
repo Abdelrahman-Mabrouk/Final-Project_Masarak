@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:masarak/homePage/homePage.dart';
+import 'package:masarak/metroLines/lines.dart';
 import 'package:masarak/setting/Setting.dart';
 import 'package:masarak/ticketPrice/ticketPrice.dart';
 import 'package:masarak/tripDetails/tripDetails.dart';
@@ -10,7 +11,7 @@ import 'metroLines/main.dart';
 
 
 void main() {
-  runApp(const  MyAp());
+  runApp(const  MasarakApp());
 }
 
 class MasarakApp extends StatelessWidget {
@@ -23,7 +24,7 @@ class MasarakApp extends StatelessWidget {
         '/Setting': (context) => Setting(),
         '/TripDetails': (context) => TripDetails(metroRouteFinder: null,),
         '/homePage': (context) => homePage(),
-      //  '/MetroLines': (context) => MetroLines(),
+        '/MetroLines': (context) => LinePage(),
         '/TicketPrice': (context) => TicketPrice(),
         // Define your page here
       },

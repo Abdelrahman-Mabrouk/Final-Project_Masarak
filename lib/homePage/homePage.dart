@@ -5,6 +5,8 @@ import '../Map/metro_route_finder.dart';
 import '../tripDetails/tripDetails.dart';
 
 class homePage extends StatefulWidget {
+  const homePage({super.key});
+
   @override
   _homePage createState() => _homePage();
 }
@@ -22,6 +24,7 @@ class _homePage extends State<homePage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+
           children: [
             DropdownButton<String>(
               hint: Text("اختر محطة البداية"),
@@ -80,7 +83,7 @@ class _homePage extends State<homePage> {
                     );
                   } else {
                     // حساب المسار
-                    routeFinder.routeStations = routeFinder.getStationsBetween(routeFinder.startStation!, routeFinder.endStation!);
+                    routeFinder.getStationsBetween(routeFinder.startStation!, routeFinder.endStation!);
 
                     // الانتقال إلى صفحة عرض التفاصيل
                     print("-------------------routeFinder.startStation----------------------------");
