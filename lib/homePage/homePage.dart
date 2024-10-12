@@ -80,7 +80,7 @@ class _homePage extends State<homePage> {
                     );
                   } else {
                     // حساب المسار
-                    routeFinder.routeStations = routeFinder.getStationsBetween(routeFinder.startStation!, routeFinder.endStation!);
+                     routeFinder.getStationsBetween(routeFinder.startStation!, routeFinder.endStation!);
 
                     // الانتقال إلى صفحة عرض التفاصيل
                     print("-------------------routeFinder.startStation----------------------------");
