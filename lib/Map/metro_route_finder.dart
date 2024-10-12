@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 class MetroRouteFinder  {
   List stations = [];
+  Set <String> stationsname = {};
   String? startStation;
   String? endStation;
   String? nameOftransferStation;
@@ -34,7 +35,11 @@ class MetroRouteFinder  {
     String data = await rootBundle.loadString('assets/jsonFiles/metroLinesData.json');
 
     stations = jsonDecode(data);
+    for(var station in stations){
+      stationsname.add(station['name']);
+    }
   }
+
 
   // دالة لحساب المحطات بين خطين
   void getStationsBetween(String start, String end) {
