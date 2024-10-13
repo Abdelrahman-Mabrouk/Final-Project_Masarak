@@ -4,7 +4,6 @@ import 'package:masarak/homePage/homePage.dart';
 import 'package:masarak/metroLines/lines.dart';
 import 'package:masarak/setting/Setting.dart';
 import 'package:masarak/ticketPrice/ticket.dart';
-import 'package:masarak/ticketPrice/ticketPrice.dart';
 import 'package:masarak/tripDetails/tripDetails.dart';
 import 'StartScreenAndNavBar/splashScreen.dart';
 

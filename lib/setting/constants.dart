@@ -12,8 +12,8 @@ abstract class AppColors {
 abstract class AppAssets {
   static const String metroLogo = 'assets/photoAndIcon/metrologo.png';
   static const String googlePlayIcon = 'assets/photoAndIcon/google_play_icon.png';
-  static const String settingsIcon = 'assets/settings_icon.svg';
-  static const String shareIcon = 'assets/share_icon.png';
+  static const String settingsIcon = 'assets/photoAndIcon/settings_icon.svg';
+  static const String shareIcon = 'assets/photoAndIcon/share_icon.png';
   static const String customLine = 'assets/custom_line.svg';
 
   // Nav Bar Icons

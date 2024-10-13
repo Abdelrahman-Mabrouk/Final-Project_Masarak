@@ -125,15 +125,29 @@ class _LinePageState extends State<LinePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: InteractiveViewer(
-            panEnabled: true, // Allow panning
-            minScale: 0.5, // Minimum scale for zooming out
-            maxScale: 4.0, // Maximum scale for zooming in
-            child: Image.asset('assets/images/photometroLines.jpg'),
+          contentPadding: EdgeInsets.zero, // إزالة الـ padding
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.98, // 90% من عرض الشاشة
+            height: MediaQuery.of(context).size.height * 0.6, // 50% من ارتفاع الشاشة
+            decoration: BoxDecoration(
+              color: Color(0xFF00887A), // لون الخلفية
+              borderRadius: BorderRadius.circular(20), // الحواف الدائرية
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20), // قص المحتوى ليكون داخل الحواف الدائرية
+              child: InteractiveViewer(
+                panEnabled: true, // السماح بتحريك الصورة
+                minScale: 0.5,    // الحد الأدنى للتكبير
+                maxScale: 4.0,    // الحد الأقصى للتكبير
+                child: Image.asset('assets/images/photometroLines.jpg'),
+              ),
+            ),
           ),
         );
       },
     );
+
+
   }
 
   // Builds the dropdown for selecting a metro line

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants.dart';
 import 'change_language_button.dart';
@@ -58,7 +59,7 @@ class WhiteBox extends StatelessWidget {
 
 class CustomButtons extends StatelessWidget {
   const CustomButtons({super.key});
-
+final String appLink = "نزل التطبيق دلوقتي مستني اي";
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -83,16 +84,19 @@ class CustomButtons extends StatelessWidget {
         const SizedBox(height: 25),
         Stack(
           children: [
-            Container(
-              width: double.infinity,
-              height: 60,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Text(
-                'قيمنا علي جوجل بلاي',
-                style: AppTextStyles.bodyMedium(context),
+            MaterialButton(
+              onPressed: () {},
+              child: Container(
+                width: double.infinity,
+                height: 60,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text(
+                  'قيمنا علي جوجل بلاي',
+                  style: AppTextStyles.bodyMedium(context),
+                ),
               ),
             ),
             SvgPicture.asset(AppAssets.googlePlayIcon),
@@ -101,16 +105,29 @@ class CustomButtons extends StatelessWidget {
         const SizedBox(height: 25),
         Stack(
           children: [
-            Container(
-              width: double.infinity,
-              height: 60,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Text(
-                'شارك التطبيق مع اصحابك',
-                style: AppTextStyles.bodyMedium(context),
+            MaterialButton(
+              onPressed: () async {
+                String whatsappUrl =
+                    "whatsapp://send?text=جرب هذا التطبيق الرائع: $appLink";
+                if (await canLaunch(whatsappUrl)) {
+                  await launch(whatsappUrl);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('واتساب غير مثبت على الجهاز')),
+                  );
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                height: 60,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text(
+                  'شارك التطبيق مع اصحابك',
+                  style: AppTextStyles.bodyMedium(context),
+                ),
               ),
             ),
             Positioned(left: -10, child: SvgPicture.asset(AppAssets.shareIcon)),
