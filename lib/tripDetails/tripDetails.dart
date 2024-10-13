@@ -70,7 +70,7 @@ class _TripDetailsState extends State<TripDetails> {
                           textDesc: "الوقت",
                           iconDesc: CupertinoIcons.clock,
                           classDetail: "دقيقة",
-                          classNum:  "${(numberOfStation)!*2}"
+                          classNum:  "${((numberOfStation)!-1)*2}"
                       )
                     ],
                   ),

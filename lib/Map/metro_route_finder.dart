@@ -71,6 +71,7 @@ class MetroRouteFinder  {
             getStationsBetweenSameLine(start, transferStation, startLine!));
         routeStations2.addAll(
             getStationsBetweenSameLine(end, transferStation, endLine!));
+
       }
     }
   }
@@ -92,7 +93,10 @@ class MetroRouteFinder  {
         }
       }
     }
-    if(result[0]==endStation){result= result.reversed.toList();}
+
+
+    if(result[0]==endStation || result[0]==end ){
+      result= result.reversed.toList();}
 
 
     return result;
