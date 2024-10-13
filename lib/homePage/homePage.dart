@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masarak/StartScreenAndNavBar/bottomNavBar2.dart';
 import '../Map/metro_route_finder.dart';
 import '../tripDetails/tripDetails.dart';
 import '../Map/metro_route_finder.dart';
@@ -18,6 +19,7 @@ class _homePage extends State<homePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavBar2(index: 3),
       appBar: AppBar(
         title: Text('Metro Route Finder'),
       ),

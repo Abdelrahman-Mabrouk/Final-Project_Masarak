@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:masarak/homePage/homePage.dart';
 import 'package:masarak/metroLines/lines.dart';
+import 'package:masarak/ticketPrice/ticket.dart';
 import 'package:masarak/ticketPrice/ticketPrice.dart';
 import 'package:masarak/tripDetails/tripDetails.dart';
 
@@ -34,7 +35,7 @@ class Setting extends StatelessWidget {
           '/TripDetails': (context) => TripDetails(metroRouteFinder: null,),
           '/homePage': (context) => homePage(),
           '/MetroLines': (context) => LinePage(),
-          '/TicketPrice': (context) => TicketPrice(),
+          '/TicketPrice': (context) => TicketPage(),
       },
     );
   }

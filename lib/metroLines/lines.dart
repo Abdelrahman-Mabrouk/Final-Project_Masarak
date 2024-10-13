@@ -1,6 +1,7 @@
 import 'dart:convert'; // For JSON decoding
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // For rootBundle
+import 'package:flutter/services.dart';
+import 'package:masarak/StartScreenAndNavBar/bottomNavBar2.dart'; // For rootBundle
 
 class LinePage extends StatefulWidget {
   const LinePage({super.key});
@@ -39,17 +40,22 @@ class _LinePageState extends State<LinePage> {
       return; // Handle the case where no valid line is selected
     }
 
-    String jsonString = await rootBundle.loadString(jsonFile);
-    List<dynamic> jsonResponse = jsonDecode(jsonString);
+    try {
+      String jsonString = await rootBundle.loadString(jsonFile);
+      List<dynamic> jsonResponse = jsonDecode(jsonString);
 
-    setState(() {
-      stations = jsonResponse.map((station) => station['name'] as String).toList();
-    });
+      setState(() {
+        stations = jsonResponse.map((station) => station['name'] as String).toList();
+      });
+    } catch (e) {
+      print("Error loading stations: $e"); // Log the error for debugging
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavBar2(index: 4),
       backgroundColor: const Color.fromRGBO(232, 232, 232, 1),
       body: Column(
         children: [
@@ -87,7 +93,7 @@ class _LinePageState extends State<LinePage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Image.asset('assets/icons/ic_map.png'),
+                  child: Image.asset('assets/photoAndIcon/ic_map.png'),
                 ),
               ),
               const SizedBox(width: 170),
@@ -148,7 +154,9 @@ class _LinePageState extends State<LinePage> {
               setState(() {
                 selectedLine = newValue;
                 showContainers = true;
-                loadStations(selectedLine!); // Load stations from JSON
+                if (selectedLine != null) {
+                  loadStations(selectedLine!); // Load stations from JSON
+                }
               });
             },
             items: [firstLine, secondLine, thirdLine].map<DropdownMenuItem<String>>((String value) {
@@ -172,7 +180,7 @@ class _LinePageState extends State<LinePage> {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Image.asset(
-              'assets/icons/ic_lines.png', // Left-side icon
+              'assets/photoAndIcon/ic_lines.png', // Left-side icon
               color: const Color.fromRGBO(134, 134, 134, 1),
             ),
           ),
@@ -196,7 +204,7 @@ class _LinePageState extends State<LinePage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Image.asset('assets/icons/ic_lines.png'),
+            child: Image.asset('assets/photoAndIcon/ic_lines.png'),
           ),
           const SizedBox(width: 210.0),
           Padding(
@@ -220,7 +228,7 @@ class _LinePageState extends State<LinePage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(30),
         ),
-        height: 400,
+        height: 320,
         width: 400,
         child: ListView.separated(
           itemCount: stations.length,
