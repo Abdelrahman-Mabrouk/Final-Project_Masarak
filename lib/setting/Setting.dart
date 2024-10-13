@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:masarak/homePage/homePage.dart';
 import 'package:masarak/metroLines/lines.dart';
 import 'package:masarak/ticketPrice/ticket.dart';
-import 'package:masarak/ticketPrice/ticketPrice.dart';
 import 'package:masarak/tripDetails/tripDetails.dart';
 
 import 'presentation/settings_view.dart';

@@ -120,15 +120,17 @@ class _LinePageState extends State<LinePage> {
   }
 
   // Shows the map dialog with zoom capabilities
-  void _showMapDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero, // إزالة الـ padding
-          content: Container(
-            width: MediaQuery.of(context).size.width * 0.98, // 90% من عرض الشاشة
-            height: MediaQuery.of(context).size.height * 0.6, // 50% من ارتفاع الشاشة
+  void _showMapDialog(BuildContext context) {showGeneralDialog(
+    context: context,
+    barrierDismissible: true, // يسمح بإغلاق الـ Dialog عند الضغط خارجها
+    barrierLabel: '',
+    pageBuilder: (context, animation1, animation2) {
+      return Scaffold(
+        backgroundColor: Colors.transparent, // يجعل الخلفية شفافة
+        body: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width, // عرض الشاشة بالكامل
+            height: MediaQuery.of(context).size.height, // ارتفاع الشاشة بالكامل
             decoration: BoxDecoration(
               color: Color(0xFF00887A), // لون الخلفية
               borderRadius: BorderRadius.circular(20), // الحواف الدائرية
@@ -143,11 +145,10 @@ class _LinePageState extends State<LinePage> {
               ),
             ),
           ),
-        );
-      },
-    );
-
-
+        ),
+      );
+    },
+  );
   }
 
   // Builds the dropdown for selecting a metro line

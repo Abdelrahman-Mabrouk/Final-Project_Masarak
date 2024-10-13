@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:masarak/StartScreenAndNavBar/bottomNavBar2.dart';
+import '../Map/metro_route_finder.dart';
 import 'dropdown.dart';
 
 class TicketPage extends StatefulWidget {
@@ -12,41 +11,27 @@ class TicketPage extends StatefulWidget {
 }
 
 class _TicketPageState extends State<TicketPage> {
+
+  MetroRouteFinder routeFinder = MetroRouteFinder();
   bool showContainers = false;
-  List<String> stations = [];
   String? fromPlace;
   String? toPlace;
   String? numofpeople;
   String fareMessage = '';
   int stationCount = 0;
   int time = 0;
-
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    // Load the station names when the widget is initialized
-    loadStations().then((value) {
-      setState(() {
-        stations = value; // Update the stations list
-      });
-    });
+    loadMetroStations();
   }
-
-  Future<List<String>> loadStations() async {
-    try {
-      final String response = await rootBundle.loadString(
-          'assets/jsonFiles/metroLinesData.json');
-      final List<dynamic> data = json.decode(response); // Decode the JSON data
-
-      // Extract station names from the loaded JSON
-      return List<String>.from(data.map((station) => station['name']));
-    } catch (e) {
-      print('Error loading stations: $e'); // Print error details for debugging
-      return []; // Return an empty list in case of error
-    }
+  Future<void> loadMetroStations() async {
+    await routeFinder.loadStations();
+    setState(() {}); // تحديث الواجهة بعد تحميل المحطات
   }
-
   void calculateFare() {
+
     if (fromPlace == null || toPlace == null || numofpeople == null) {
       setState(() {
         fareMessage =
@@ -54,9 +39,10 @@ class _TicketPageState extends State<TicketPage> {
       });
       return;
     }
+    routeFinder.getStationsBetween(fromPlace!, toPlace!);
 
-    int fromIndex = stations.indexOf(fromPlace!);
-    int toIndex = stations.indexOf(toPlace!);
+    int fromIndex = routeFinder.stationsname.toList().indexOf(fromPlace!);
+    int toIndex =  routeFinder.stationsname.toList().indexOf(toPlace!);
 
     if (fromIndex == -1 || toIndex == -1) {
       setState(() {
@@ -65,9 +51,8 @@ class _TicketPageState extends State<TicketPage> {
       return;
     }
 
-    int calculatedStationCount = (toIndex - fromIndex).abs();
+    int calculatedStationCount = routeFinder.routeStations1.length + routeFinder.routeStations2.length;;
     int price;
-
     if (calculatedStationCount == 0) {
       setState(() {
         fareMessage = 'Please select different stations.';
@@ -97,6 +82,7 @@ class _TicketPageState extends State<TicketPage> {
       time = (stationCount * 2).round(); // Update the time estimation
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -153,10 +139,10 @@ class _TicketPageState extends State<TicketPage> {
                         color: Color.fromRGBO(12, 105, 226, 1), fontSize: 30),
                   ),
                   const SizedBox(height: 20),
-                  stations.isNotEmpty
+                  routeFinder.stationsname.isNotEmpty
                       ? buildDropdown(
                     hintText: "من",
-                    items: stations,
+                    items: routeFinder.stationsname.toList(),
                     iconTextSpace: 300.0,
                     assetIconPath: 'assets/photoAndIcon/ic_lines.png',
                     iconPadding: 10.0,
@@ -165,16 +151,16 @@ class _TicketPageState extends State<TicketPage> {
                     onChanged: (String? newValue) {
                       setState(() {
                         fromPlace = newValue;
-                        calculateFare(); // Recalculate the fare
+                        calculateFare();// Recalculate the fare
                       });
                     },
                   )
                       : const CircularProgressIndicator(),
                   const SizedBox(height: 20),
-                  stations.isNotEmpty
+                  routeFinder.stationsname.isNotEmpty
                       ? buildDropdown(
                     hintText: "الي",
-                    items: stations,
+                    items: routeFinder.stationsname.toList(),
                     iconTextSpace: 300.0,
                     assetIconPath: 'assets/photoAndIcon/ic_lines.png',
                     iconPadding: 10.0,
@@ -183,7 +169,7 @@ class _TicketPageState extends State<TicketPage> {
                     onChanged: (String? newValue) {
                       setState(() {
                         toPlace = newValue;
-                        calculateFare(); // Recalculate the fare
+                        calculateFare() ; // Recalculate the fare
                       });
                     },
                   )
@@ -200,7 +186,7 @@ class _TicketPageState extends State<TicketPage> {
                     onChanged: (String? newValue) {
                       setState(() {
                         numofpeople = newValue;
-                        calculateFare(); // Recalculate the fare
+                        calculateFare();
                       });
                     },
                   ),
@@ -300,6 +286,7 @@ class _TicketPageState extends State<TicketPage> {
                                 Text(fareMessage,
                                     style: const TextStyle(fontSize: 25)),
                               ],
+
                             ),
                           ),
                         ),

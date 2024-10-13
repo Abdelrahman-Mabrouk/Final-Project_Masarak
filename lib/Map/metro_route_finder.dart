@@ -27,9 +27,6 @@ class MetroRouteFinder  {
   bool isTransferStation = false;
 
 
-  MetroRouteFinder(){
-    loadStations();
-  }
   // قراءة ملف JSON للمحطات
   Future<void> loadStations() async {
     String data = await rootBundle.loadString('assets/jsonFiles/metroLinesData.json');

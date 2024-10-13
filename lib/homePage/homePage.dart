@@ -15,7 +15,16 @@ class homePage extends StatefulWidget {
 class _homePage extends State<homePage> {
   MetroRouteFinder routeFinder = MetroRouteFinder(); // إنشاء نسخة من كلاس MetroRouteFinder
 
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadMetroStations();
+  }
+  Future<void> loadMetroStations() async {
+    await routeFinder.loadStations();
+    setState(() {}); // تحديث الواجهة بعد تحميل المحطات
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +46,10 @@ class _homePage extends State<homePage> {
 
                 });
               },
-              items: routeFinder.stations.map<DropdownMenuItem<String>>((station) {
+              items: routeFinder.stationsname.map((station) {
                 return DropdownMenuItem<String>(
-                  value: station['name'],  // تعديل المفتاح إلى 'name'
-                  child: Text(station['name']),  // تعديل المفتاح إلى 'name'
+                  value: station,  // تعديل المفتاح إلى 'name'
+                  child: Text(station),  // تعديل المفتاح إلى 'name'
                 );
               }).toList(),
             ),
@@ -53,10 +62,10 @@ class _homePage extends State<homePage> {
                   routeFinder.endStation = newValue;
                 });
               },
-              items: routeFinder.stations.map<DropdownMenuItem<String>>((station) {
+              items: routeFinder.stationsname.map((station) {
                 return DropdownMenuItem<String>(
-                  value: station['name'],  // تعديل المفتاح إلى 'name'
-                  child: Text(station['name']),  // تعديل المفتاح إلى 'name'
+                  value: station,  // تعديل المفتاح إلى 'name'
+                  child: Text(station),  // تعديل المفتاح إلى 'name'
                 );
               }).toList(),
             ),

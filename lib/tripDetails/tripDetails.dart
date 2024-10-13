@@ -92,7 +92,7 @@ class _TripDetailsState extends State<TripDetails> {
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 27)),
-                          Text("هتركب المترو وتركب محطة ${(widget.metroRouteFinder!.isTransferStation)?(" وهتنزل محطة ${widget.metroRouteFinder!.nameOftransferStation} عشان تحول للخط ${widget.metroRouteFinder!.endLine} ولما تركب من هناك خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} و يبق كد حمدلله علي سلامتك ") :  "و خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} ويبق كد حمدلله علي سلامتك "} ${widget.metroRouteFinder!.startStation}",
+                          Text("   تركب محطة ${widget.metroRouteFinder!.startStation} ${(widget.metroRouteFinder!.isTransferStation)?(" وهتنزل محطة ${widget.metroRouteFinder!.nameOftransferStation} عشان تحول للخط ${widget.metroRouteFinder!.endLine} ولما تركب من هناك خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} و يبق كد حمدلله علي سلامتك ") :  "و خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} ويبق كد حمدلله علي سلامتك "} ",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
