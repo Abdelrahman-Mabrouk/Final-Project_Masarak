@@ -99,7 +99,8 @@ final String appLink = "نزل التطبيق دلوقتي مستني اي";
                 ),
               ),
             ),
-            SvgPicture.asset(AppAssets.googlePlayIcon),
+
+            Positioned(right: 9,top: 2, child: Image.asset(AppAssets.googlePlayIcon)),
           ],
         ),
         const SizedBox(height: 25),
@@ -130,7 +131,7 @@ final String appLink = "نزل التطبيق دلوقتي مستني اي";
                 ),
               ),
             ),
-            Positioned(left: -10, child: SvgPicture.asset(AppAssets.shareIcon)),
+            Positioned(left: -9,top: -10, child: Image.asset(AppAssets.shareIcon)),
           ],
         ),
       ],
