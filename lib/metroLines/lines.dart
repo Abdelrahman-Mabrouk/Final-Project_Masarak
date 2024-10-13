@@ -132,7 +132,7 @@ class _LinePageState extends State<LinePage> {
             width: MediaQuery.of(context).size.width, // عرض الشاشة بالكامل
             height: MediaQuery.of(context).size.height, // ارتفاع الشاشة بالكامل
             decoration: BoxDecoration(
-              color: Color(0xFF00887A), // لون الخلفية
+                color: Color.fromARGB(255, 9, 15, 39), // لون الخلفية
               borderRadius: BorderRadius.circular(20), // الحواف الدائرية
             ),
             child: ClipRRect(

@@ -28,7 +28,7 @@ class _BottomNavBar2State extends State<BottomNavBar2> {
           top: 40,
           child: Container(
             decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 86, 95, 95),
+            color: Color.fromARGB(255, 9, 15, 39),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
