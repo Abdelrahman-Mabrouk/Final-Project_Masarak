@@ -26,6 +26,17 @@ class MetroRouteFinder  {
   };
   bool isTransferStation = false;
 
+  Color getLineColorByName(String lineName) {
+    if (lineName.contains("الخط الاول")) {
+      return Color.fromARGB(255, 2, 11, 80); // Blue
+    } else if (lineName.contains("الخط الثاني")) {
+      return Color.fromARGB(255, 255, 0, 0); // Red
+    } else if (lineName.contains("الخط الثالث")) {
+      return Color.fromARGB(255, 0, 128, 0); // Green
+    } else {
+      return Color.fromARGB(255, 0, 0, 0); // Default Black
+    }
+  }
 
   // قراءة ملف JSON للمحطات
   Future<void> loadStations() async {

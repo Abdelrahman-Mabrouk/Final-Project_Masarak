@@ -21,7 +21,10 @@ class _TripDetailsState extends State<TripDetails> {
   final bool noDirection = false;
   late List<Map<dynamic, dynamic>> data;
   late int ? numberOfStation = widget.metroRouteFinder!.routeStations1.length + widget.metroRouteFinder!.routeStations2.length;
-
+  String lineNameStart = "Unknown Line"; // Provide default values
+  String lineNameEnd = "Unknown Line";
+  Color lineStartColor = Colors.black;
+  Color lineEndColor = Colors.black;
   // this. startStation,
   // this.endStation,
   // thirouteStations
@@ -29,6 +32,10 @@ class _TripDetailsState extends State<TripDetails> {
   @override
   void initState() {
     super.initState();
+    lineNameStart = widget.metroRouteFinder?.nameOfLines[widget.metroRouteFinder?.startLine ?? 1] ?? "Unknown Line";
+    lineNameEnd = widget.metroRouteFinder?.nameOfLines[widget.metroRouteFinder?.endLine ?? 1] ?? "Unknown Line";
+    lineStartColor = widget.metroRouteFinder!.getLineColorByName((lineNameStart));
+    lineEndColor = widget.metroRouteFinder!.getLineColorByName((lineNameEnd));
   }
 
   @override
@@ -212,7 +219,7 @@ class _TripDetailsState extends State<TripDetails> {
                                     height: (widget.metroRouteFinder!.routeStations1.length * 50.0),
                                     decoration: BoxDecoration(
                                       color:
-                                      Color.fromARGB(255, 2, 11, 80),
+                                      lineStartColor,
                                       borderRadius:
                                       BorderRadius.circular(25),
                                     ),
@@ -409,7 +416,7 @@ class _TripDetailsState extends State<TripDetails> {
                                         width: 40,
                                         height: (widget.metroRouteFinder!.routeStations2.length * 50.0),
                                         decoration: BoxDecoration(
-                                          color:Color.fromARGB(255, 2, 11, 80),
+                                          color: lineEndColor,
                                           borderRadius:
                                           BorderRadius.circular(
                                               25),
@@ -531,7 +538,7 @@ class _TripDetailsState extends State<TripDetails> {
                               height: (widget.metroRouteFinder!.routeStations1.length * 50.0),
                               decoration: BoxDecoration(
                                 color:
-                                Color.fromARGB(255, 2, 11, 80),
+                                lineStartColor,
                                 borderRadius:
                                 BorderRadius.circular(25),
                               ),
@@ -727,7 +734,7 @@ class _TripDetailsState extends State<TripDetails> {
                                   width: 40,
                                   height: (widget.metroRouteFinder!.routeStations2.length * 50.0),
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 2, 11, 80),
+                                    color: lineEndColor,
                                     borderRadius:
                                     BorderRadius.circular(
                                         25),
