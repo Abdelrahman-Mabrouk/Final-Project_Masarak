@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:masarak/homePage/homePage.dart';
-
 import '../StartScreenAndNavBar/bottomNavBar2.dart';
+import '../homePage/home_view.dart';
 
 class NoDirection extends StatelessWidget {
   const NoDirection({super.key});
@@ -62,7 +61,7 @@ class NoDirection extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => homePage(),
+                                    builder: (context) => HomeView(),
                                   ),
                                 );
                               },

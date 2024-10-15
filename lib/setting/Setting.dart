@@ -5,6 +5,7 @@ import 'package:masarak/metroLines/lines.dart';
 import 'package:masarak/ticketPrice/ticket.dart';
 import 'package:masarak/tripDetails/tripDetails.dart';
 
+import '../homePage/home_view.dart';
 import 'presentation/settings_view.dart';
 
 
@@ -32,7 +33,7 @@ class Setting extends StatelessWidget {
         routes: {
           '/Setting': (context) => Setting(),
           '/TripDetails': (context) => TripDetails(metroRouteFinder: null,),
-          '/homePage': (context) => homePage(),
+          '/homePage': (context) => HomeView(),
           '/MetroLines': (context) => LinePage(),
           '/TicketPrice': (context) => TicketPage(),
       },

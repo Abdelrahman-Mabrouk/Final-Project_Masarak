@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:masarak/homePage/homePage.dart';
 
+import '../homePage/home_view.dart';
+
 
 class Splashscreen extends StatelessWidget {
   const Splashscreen({super.key});
@@ -61,7 +63,7 @@ class Splashscreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) =>  homePage()),
+                  MaterialPageRoute(builder: (context) =>  HomeView()),
                 );
               },
 

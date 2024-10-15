@@ -48,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
             }
           },
-          backgroundColor: const Color.fromARGB(255, 254, 139, 0),
+          backgroundColor:  Color(0xffff9735),
           selectedItemColor: Colors.white,
           unselectedItemColor: const Color.fromARGB(110, 255, 255, 255),
           showSelectedLabels: false,
