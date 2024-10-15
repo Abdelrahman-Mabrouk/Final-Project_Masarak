@@ -11,10 +11,14 @@ class YourPathWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildPathText(context),
-        _buildPathButton(context),
-
-        // Button UI
+        Transform.translate(
+          offset: const Offset(0, -60), // رفع العنصر الأول للأعلى
+          child: _buildPathText(context),
+        ),
+        Transform.translate(
+          offset: const Offset(0, -60), // رفع العنصر الثاني للأعلى
+          child: _buildPathButton(context),
+        ),
       ],
     );
   }
