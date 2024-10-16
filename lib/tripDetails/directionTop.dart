@@ -7,19 +7,23 @@ class DirectionTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       height: 120,
       color: Color.fromARGB(255, 2, 11, 80),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 25.0),
+            padding: const EdgeInsets.only(right:0.25),
             child: Text(toStation, style: TextStyle(color: Colors.white, fontSize: 32)),
           ),
-          Icon(CupertinoIcons.arrow_left, color: Colors.white, size: 32),
           Padding(
-            padding: const EdgeInsets.only(left: 25.0),
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(CupertinoIcons.arrow_left
+                , color: Colors.white, size: 32),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 0.25),
             child: Text(fromStation, style: TextStyle(color: Colors.white, fontSize: 32)),
           ),
         ],

@@ -11,10 +11,9 @@ class DetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 125,
-      width: 145,
+      width: MediaQuery.of(context).size.width * 0.3174,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25))
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -24,7 +23,7 @@ class DetailsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(textDesc, style: TextStyle(color: Colors.grey, fontSize: 27)),
-              Icon(iconDesc, color: Colors.grey, size: 40),
+              Icon(iconDesc, color: Colors.grey, size: 25),
             ],
           ),
           Row(

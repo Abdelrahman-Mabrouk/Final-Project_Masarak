@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key, required this.index});
+
   final int index;
 
   @override
@@ -19,35 +20,39 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width; // الحصول على عرض الشاشة
+    double screenWidth =
+        MediaQuery.of(context).size.width; // الحصول على عرض الشاشة
 
     return Container(
-      margin: EdgeInsets.only(bottom: 40, left: screenWidth * 0.05, right: screenWidth * 0.05), // استخدام عرض الشاشة
+      margin: EdgeInsets.only(
+          bottom: 40, left: screenWidth * 0.05, right: screenWidth * 0.05),
+      // استخدام عرض الشاشة
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(30)),
         child: BottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) {
-            if (index != currentIndex) { // Check if the new index is different
+            if (index != currentIndex) {
+              // Check if the new index is different
               setState(() {
                 currentIndex = index;
               });
-              // Navigate only if the index is different
+// Navigate only if the index is different
               switch (index) {
                 case 0:
-                  Navigator.pushReplacementNamed(context, '/Setting');
+                  Navigator.pushNamed(context, '/Setting');
                   break;
                 case 1:
-                  Navigator.pushReplacementNamed(context, '/TripDetails');
+                  Navigator.pushNamed(context, '/TripDetails');
                   break;
                 case 2:
-                  Navigator.pushReplacementNamed(context, '/homePage');
+                  Navigator.pushNamed(context, '/homePage');
                   break;
                 case 3:
-                  Navigator.pushReplacementNamed(context, '/MetroLines');
+                  Navigator.pushNamed(context, '/MetroLines');
                   break;
                 case 4:
-                  Navigator.pushReplacementNamed(context, '/TicketPrice');
+                  Navigator.pushNamed(context, '/TicketPrice');
                   break;
               }
             }

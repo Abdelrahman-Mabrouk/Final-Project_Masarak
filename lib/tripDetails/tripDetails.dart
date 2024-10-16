@@ -36,10 +36,10 @@ class _TripDetailsState extends State<TripDetails> {
     super.initState();
     if (widget.metroRouteFinder != null) {
       lineNameStart = widget.metroRouteFinder
-          ?.nameOfLines[widget.metroRouteFinder?.startLine ?? 1] ??
+              ?.nameOfLines[widget.metroRouteFinder?.startLine ?? 1] ??
           "Unknown Line";
       lineNameEnd = widget.metroRouteFinder
-          ?.nameOfLines[widget.metroRouteFinder?.endLine ?? 1] ??
+              ?.nameOfLines[widget.metroRouteFinder?.endLine ?? 1] ??
           "Unknown Line";
       lineStartColor =
           widget.metroRouteFinder!.getLineColorByName((lineNameStart));
@@ -49,12 +49,14 @@ class _TripDetailsState extends State<TripDetails> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // عرض الشاشة
+    double screenHeight = MediaQuery.of(context).size.height; // ارتفاع الشاشة
     return (widget.metroRouteFinder == null)
         ? NoDirection()
         : Scaffold(
             bottomNavigationBar: BottomNavBar2(index: 2),
             appBar: AppBar(backgroundColor: Color.fromARGB(255, 2, 11, 80)),
-            backgroundColor: Color.fromARGB(255, 248, 248, 230),
+            backgroundColor: CupertinoColors.lightBackgroundGray,
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -62,14 +64,13 @@ class _TripDetailsState extends State<TripDetails> {
                       fromStation: widget.metroRouteFinder!.startStation!,
                       toStation: widget.metroRouteFinder!.endStation!),
                   Container(
-                    width: double.infinity,
-                    height: 260,
+                    width: screenWidth * 0.98,
+                    height: screenHeight * 0.33,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(25)),
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             DetailsCard(
                                 textDesc: "السعر",
@@ -84,17 +85,26 @@ class _TripDetailsState extends State<TripDetails> {
                                                 numberOfStation! <= 16)
                                             ? "10"
                                             : "8"),
+                            SizedBox(
+                              width: 5,
+                            ),
                             DetailsCard(
                                 textDesc: "المحطات",
                                 iconDesc: CupertinoIcons.tram_fill,
                                 classDetail: "محطة",
                                 classNum: "$numberOfStation"),
+                            SizedBox(
+                              width: 5,
+                            ),
                             DetailsCard(
                                 textDesc: "الوقت",
                                 iconDesc: CupertinoIcons.clock,
                                 classDetail: "دقيقة",
-                                classNum: "${((numberOfStation)! - 1) * 2}")
+                                classNum: "${((numberOfStation)! - 1) * 2}"),
                           ],
+                        ),
+                        SizedBox(
+                          height: 5,
                         ),
                         Container(
                           height: 125,
@@ -102,7 +112,7 @@ class _TripDetailsState extends State<TripDetails> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.vertical(
-                                  bottom: Radius.circular(25))),
+                                  bottom: Radius.circular(10))),
                           child: SingleChildScrollView(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -112,13 +122,15 @@ class _TripDetailsState extends State<TripDetails> {
                                     style: TextStyle(
                                         color: Colors.grey,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 27)),
+                                        fontSize: 27),
+                                    softWrap: true),
                                 Text(
                                     "   تركب محطة ${widget.metroRouteFinder!.startStation} ${(widget.metroRouteFinder!.isTransferStation) ? (" وهتنزل محطة ${widget.metroRouteFinder!.nameOftransferStation} عشان تحول للخط ${widget.metroRouteFinder!.endLine} ولما تركب من هناك خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} و يبق كد حمدلله علي سلامتك ") : "و خليك راكب لحد متوصل لمحطة ${widget.metroRouteFinder!.endStation} ويبق كد حمدلله علي سلامتك "} ",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 21))
+                                        fontSize: 21),
+                                    softWrap: true),
                               ],
                             ),
                           ),
@@ -126,6 +138,7 @@ class _TripDetailsState extends State<TripDetails> {
                       ],
                     ),
                   ),
+                  //-------------------------------------------------------------------------------------------------
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -162,18 +175,22 @@ class _TripDetailsState extends State<TripDetails> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 130.0, right: 30),
-                              child: Text("خط سير المترو",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 27)),
+                            SizedBox(
+                              width: screenWidth*0.75,
+                              child: Row(children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 80.0),
+                                  child: Text("خط سير المترو",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 27)),
+                                ),
+                                Icon(
+                                  Icons.navigation_outlined,
+                                  color: Colors.black,
+                                  size: 30,
+                                ),
+                              ]),
                             ),
-                            Icon(
-                              Icons.navigation_outlined,
-                              color: Colors.black,
-                              size: 30,
-                            )
                           ],
                         ),
                         Divider(
@@ -517,7 +534,8 @@ class _TripDetailsState extends State<TripDetails> {
                         borderRadius: BorderRadius.circular(25)),
                     child: Column(
                       children: [
-                        Text("اتجاه عدلي منصور (السلام) - الخط الثالث",
+                        Text(
+                            "${widget.metroRouteFinder!.nameOfLines[widget.metroRouteFinder!.startLine]}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 25)),
                         Divider(
