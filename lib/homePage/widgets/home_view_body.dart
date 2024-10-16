@@ -17,7 +17,7 @@ class HomeViewBody extends StatelessWidget {
           const WelcomeWidget(),
       
           // 3- Know your path part
-          const YourPathWidget(),
+          YourPathWidget(),
       
           // 4- From To part
            FromToWidget(),

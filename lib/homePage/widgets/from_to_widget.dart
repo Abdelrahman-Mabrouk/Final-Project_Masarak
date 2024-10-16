@@ -51,9 +51,4 @@ class _FromToWidgetState extends State<FromToWidget> {
     );
   }
 
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
 }

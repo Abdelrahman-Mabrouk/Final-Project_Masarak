@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../Map/metro_route_finder.dart';
-import '../../tripDetails/tripDetails.dart';
 import '../constants.dart';
 
 class FromToContainer extends StatefulWidget {

@@ -1,24 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../Map/nearstStation.dart';
+import '../../Map/openGoogleMap.dart';
+import '../../Map/watingPageGoogleMap.dart';
 import '../constants.dart';
 
-class YourPathWidget extends StatelessWidget {
-  const YourPathWidget({super.key});
+class YourPathWidget extends StatefulWidget {
+  @override
+  _YourPathWidget createState() => _YourPathWidget();
+}
+
+class _YourPathWidget extends State<YourPathWidget> {
+  final NearestStation _metroService = NearestStation();
+    String _nearestStation = 'جاري العثور على أقرب محطة ليك';
+    bool _isLoading = true; // حالة التحميل
+    int maxChars = 11; // الحد الأقصى لعدد الحروف
+
+  Future<void> _findNearestStation() async {
+    try {
+      String nearestStation = await _metroService.getNearestStation();
+      setState(() {
+        _nearestStation = nearestStation;
+        _isLoading = false; // تعيين حالة التحميل إلى false بعد الانتهاء
+      });
+    } catch (e) {
+      setState(() {
+        _nearestStation = 'خطأ في تحديد الموقع: $e';
+        _isLoading = false; // تعيين حالة التحميل إلى false في حالة الخطأ
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    requestLocationPermission(context); // طلب إذن الوصول للموقع عند فتح التطبيق
+    _findNearestStation();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Transform.translate(
-          offset: const Offset(0, -60), // رفع العنصر الأول للأعلى
-          child: _buildPathText(context),
-        ),
-        Transform.translate(
-          offset: const Offset(0, -60), // رفع العنصر الثاني للأعلى
-          child: _buildPathButton(context),
-        ),
+        _buildPathText(context),
+        _buildPathButton(context),
       ],
     );
   }
@@ -47,25 +74,72 @@ class YourPathWidget extends StatelessWidget {
       alignment: Alignment.centerLeft,
       children: [
         Container(
-          width: 120,
+          width: 100,
           height: 50,
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 10),
+          margin: const EdgeInsets.only(left: 50),
           decoration: BoxDecoration(
-              color: AppColors.whiteColor,
-              borderRadius: BorderRadius.circular(30)),
-          child: Text('أقرب\nمحطة',
-              style: AppTextStyles.bodySmall(context)
-                  .copyWith(color: AppColors.NavBarColor)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1), // لون الظل مع الشفافية
+                spreadRadius: 9, // مدى انتشار الظل
+                blurRadius: 15, // مدى ضبابية الظل
+                offset: Offset(0, 3), // إزاحة الظل (X:0, Y:3)
+              ),
+            ],
+            color: AppColors.whiteColor,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            _nearestStation,
+            style: AppTextStyles.bodyMedium(context).copyWith(color: AppColors.NavBarColor),
+              softWrap: true
+          ),
         ),
+
         Container(
           width: 80,
           height: 50,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.orangeAccent.withOpacity(0.9),
+                  // لون الظل مع الشفافية
+                  spreadRadius: 5,
+                  // مدى انتشار الظل
+                  blurRadius: 15,
+                  // مدى ضبابية الظل
+                  offset: Offset(0, 3), // إزاحة الظل (X:0, Y:3)
+                ),
+              ],
               color: AppColors.NavBarColor,
               borderRadius: BorderRadius.circular(30)),
-          child: SvgPicture.asset(AppAssets.directionsIcon),
+          child: MaterialButton(
+              onPressed: () {
+                // التحقق من القيم قبل الانتقال
+                if (_metroService.nearestStationLat != null &&
+                    _metroService.nearestStationLon != null) {
+                  // الانتقال إلى صفحة الانتظار
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          WaitingPage(nearestStation: _nearestStation),
+                    ),
+                  );
+                  // فتح تطبيق خرائط جوجل
+                  openGoogleMapsDirections(_metroService.nearestStationLat!,
+                      _metroService.nearestStationLon!, context);
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('لا يمكن فتح الخريطة.')),
+                  );
+                }
+              },
+              child: SvgPicture.asset(AppAssets.directionsIcon)),
         )
       ],
     );
