@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key , required this.index});
+  const BottomNavBar({super.key, required this.index});
   final int index;
+
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
   late int currentIndex;
+
   @override
   void initState() {
     super.initState();
-    currentIndex = widget.index -1; // Correct way to initialize the index
+    currentIndex = widget.index - 1; // Correct way to initialize the index
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width; // الحصول على عرض الشاشة
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
+      margin: EdgeInsets.only(bottom: 40, left: screenWidth * 0.05, right: screenWidth * 0.05), // استخدام عرض الشاشة
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(30)),
         child: BottomNavigationBar(
@@ -48,7 +52,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               }
             }
           },
-          backgroundColor:  Color(0xffff9735),
+          backgroundColor: const Color(0xffff9735),
           selectedItemColor: Colors.white,
           unselectedItemColor: const Color.fromARGB(110, 255, 255, 255),
           showSelectedLabels: false,
@@ -56,7 +60,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
-              activeIcon: Icon(Icons.settings,
+              activeIcon: Icon(
+                Icons.settings,
                 shadows: [
                   BoxShadow(
                     color: Colors.white,
@@ -71,7 +76,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.show_chart),
-              activeIcon: Icon(Icons.show_chart,
+              activeIcon: Icon(
+                Icons.show_chart,
                 shadows: [
                   BoxShadow(
                     color: Colors.white,
@@ -85,7 +91,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              activeIcon: Icon(Icons.home_filled,
+              activeIcon: Icon(
+                Icons.home_filled,
                 shadows: [
                   BoxShadow(
                     color: Colors.white,
@@ -99,7 +106,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.map_outlined),
-              activeIcon: Icon(Icons.map,
+              activeIcon: Icon(
+                Icons.map,
                 shadows: [
                   BoxShadow(
                     color: Colors.white,
@@ -113,7 +121,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.confirmation_number),
-              activeIcon: Icon(Icons.confirmation_number,
+              activeIcon: Icon(
+                Icons.confirmation_number,
                 shadows: [
                   BoxShadow(
                     color: Colors.white,
