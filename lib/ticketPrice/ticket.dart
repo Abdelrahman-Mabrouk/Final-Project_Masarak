@@ -165,7 +165,7 @@ class _TicketPageState extends State<TicketPage> {
                     iconTextSpace: 100.0,
                     assetIconPath: 'assets/photoAndIcon/ic_lines.png',
                     iconPadding: 0.0,
-                    dropdownWidth: MediaQuery.of(context).size.width,
+                    dropdownWidth: MediaQuery.of(context).size.width *0.9,
                     currentValue: fromPlace,
                     onChanged: (String? newValue) {
                       setState(() {

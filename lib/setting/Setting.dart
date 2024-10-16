@@ -19,7 +19,7 @@ class Setting extends StatelessWidget {
         debugShowCheckedModeBanner: false,
 
         // Set Arabic as the only locale
-        locale: const Locale('ar'),
+        locale: const Locale('en'),
         supportedLocales: const [
           Locale('ar'),
           Locale('en'),
