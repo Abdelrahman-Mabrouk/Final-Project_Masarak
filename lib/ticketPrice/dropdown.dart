@@ -10,8 +10,10 @@ Widget buildDropdown({
   required double dropdownWidth,
   required String? currentValue,
   required ValueChanged<String?> onChanged,
+
 }) {
   return Container(
+    width: dropdownWidth,
     decoration: const BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -24,7 +26,7 @@ Widget buildDropdown({
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsets.all(iconPadding), // Custom padding for icon
+              padding: EdgeInsets.only( left: iconPadding), // Custom padding for icon
               child: Image.asset(
                 assetIconPath, // Left-side icon
                 color: const Color.fromRGBO(134, 134, 134, 1),
@@ -34,7 +36,7 @@ Widget buildDropdown({
             Text(
               hintText,
               style: const TextStyle(fontSize: 25),
-              textAlign: TextAlign.right
+              textAlign: TextAlign.left
             ),
           ],
         ),

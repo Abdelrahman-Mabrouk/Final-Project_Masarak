@@ -32,10 +32,26 @@ class _TicketPageState extends State<TicketPage> {
   }
   void calculateFare() {
 
-    if (fromPlace == null || toPlace == null || numofpeople == null) {
+    if (fromPlace == null || toPlace == null || numofpeople == null  || toPlace == fromPlace) {
       setState(() {
-        fareMessage =
-        'Invalid selection. Please select valid stations and number of people.';
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("خطأ"),
+              content: Text("Invalid selection. Please select valid stations and number of people."),
+              actions: [
+                TextButton(
+                  child: Text("موافق"),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // إغلاق الرسالة
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        fareMessage = 'Invalid selection. Please select valid stations and number of people.';
       });
       return;
     }
@@ -81,6 +97,8 @@ class _TicketPageState extends State<TicketPage> {
       stationCount = calculatedStationCount;
       time = (stationCount * 2).round(); // Update the time estimation
     });
+    showContainers = true;
+
   }
 
 
@@ -119,7 +137,7 @@ class _TicketPageState extends State<TicketPage> {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(12, 105, 226, 1),
+                      color: const Color.fromARGB(255, 7, 27, 97),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
@@ -136,22 +154,22 @@ class _TicketPageState extends State<TicketPage> {
                   const Text(
                     'حساب سعر التذكرة',
                     style: TextStyle(
-                        color: Color.fromRGBO(12, 105, 226, 1), fontSize: 30),
+                        color:const Color.fromARGB(255, 7, 27, 97),
+                       fontSize: 30),
                   ),
                   const SizedBox(height: 20),
                   routeFinder.stationsname.isNotEmpty
                       ? buildDropdown(
                     hintText: "من",
                     items: routeFinder.stationsname.toList(),
-                    iconTextSpace: 300.0,
+                    iconTextSpace: 100.0,
                     assetIconPath: 'assets/photoAndIcon/ic_lines.png',
-                    iconPadding: 10.0,
-                    dropdownWidth: 400.0,
+                    iconPadding: 0.0,
+                    dropdownWidth: MediaQuery.of(context).size.width,
                     currentValue: fromPlace,
                     onChanged: (String? newValue) {
                       setState(() {
                         fromPlace = newValue;
-                        calculateFare();// Recalculate the fare
                       });
                     },
                   )
@@ -164,12 +182,11 @@ class _TicketPageState extends State<TicketPage> {
                     iconTextSpace: 300.0,
                     assetIconPath: 'assets/photoAndIcon/ic_lines.png',
                     iconPadding: 10.0,
-                    dropdownWidth: 400.0,
+                    dropdownWidth: MediaQuery.of(context).size.width *0.9,
                     currentValue: toPlace,
                     onChanged: (String? newValue) {
                       setState(() {
                         toPlace = newValue;
-                        calculateFare() ; // Recalculate the fare
                       });
                     },
                   )
@@ -181,36 +198,30 @@ class _TicketPageState extends State<TicketPage> {
                     iconTextSpace: 220.0,
                     assetIconPath: 'assets/photoAndIcon/ic_lines.png',
                     iconPadding: 10.0,
-                    dropdownWidth: 400.0,
+                    dropdownWidth: MediaQuery.of(context).size.width * 0.9,
                     currentValue: numofpeople,
                     onChanged: (String? newValue) {
                       setState(() {
                         numofpeople = newValue;
-                        calculateFare();
                       });
                     },
                   ),
                   const SizedBox(height: 30),
                   FilledButton(
                     onPressed: () {
-                      if (fromPlace != null && toPlace != null &&
-                          numofpeople != null) {
+                      calculateFare() ; // Recalculate the fare
                         setState(() {
-                          showContainers = true;
                         });
-                      } else {
-                        setState(() {
-                          fareMessage = ' ';
-                        });
-                      }
-                    },
+                      } ,
                     style: ButtonStyle(
                       fixedSize: MaterialStateProperty.all(const Size(370, 60)),
                       backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(12, 105, 226, 1)),
+                          const Color.fromARGB(255, 7, 27, 97)),
                       elevation: MaterialStateProperty.all(10),
-                      overlayColor: MaterialStateProperty.all(Colors.lightBlue),
-                      shadowColor: MaterialStateProperty.all(Colors.lightBlue),
+                      overlayColor: MaterialStateProperty.all(Color.fromARGB(
+                          255, 0, 0, 0)),
+                      shadowColor: MaterialStateProperty.all(Color.fromARGB(
+                          255, 0, 0, 0)),
                     ),
                     child: const Text('احسب', style: TextStyle(fontSize: 25)),
                   ),
