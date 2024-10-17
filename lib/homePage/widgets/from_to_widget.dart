@@ -37,11 +37,11 @@ class _FromToWidgetState extends State<FromToWidget> {
           alignment: Alignment.center,
           children: [
             Transform.translate(
-              offset: const Offset(0, -70), // رفع العنصر الأول للأعلى
+              offset: const Offset(0, -10), // رفع العنصر الأول للأعلى
               child: FromToContainer(routeFinder: routeFinder,),
             ),
             Transform.translate(
-              offset: const Offset(0, 10), // رفع العنصر الأول للأعلى
+              offset: const Offset(0, 70), // رفع العنصر الأول للأعلى
               child: FromToActionButton(routeFinder: routeFinder,),
             ),
 

@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 
 // A reusable widget function for Dropdown
 Widget buildDropdown({
-  required String hintText,
-  required List<String> items,
-  required double iconTextSpace,
-  required String assetIconPath,
-  required double iconPadding,
-  required double dropdownWidth,
-  required String? currentValue,
-  required ValueChanged<String?> onChanged,
-
+  String? hintText,
+  List<String>? items,
+  double? iconTextSpace,
+  String? assetIconPath,
+  double? iconPadding,
+  double? dropdownWidth,
+  String? currentValue,
+  ValueChanged<String?>? onChanged,
 }) {
   return Container(
     width: dropdownWidth,
@@ -22,29 +21,29 @@ Widget buildDropdown({
       hint: SizedBox(
         width: dropdownWidth, // Width for the dropdown content
         child: Row(
-          mainAxisAlignment:MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsets.only( left: iconPadding), // Custom padding for icon
+              padding: EdgeInsets.only(left: iconPadding!),
+              // Custom padding for icon
               child: Image.asset(
-                assetIconPath, // Left-side icon
+                assetIconPath!, // Left-side icon
                 color: const Color.fromRGBO(134, 134, 134, 1),
               ),
             ),
             SizedBox(width: iconTextSpace), // Space between icon and text
-            Text(
-              hintText,
-              style: const TextStyle(fontSize: 25),
-              textAlign: TextAlign.left
-            ),
+            Text(hintText!,
+                style: const TextStyle(fontSize: 25),
+                textAlign: TextAlign.left),
           ],
         ),
       ),
       dropdownColor: Colors.white,
       onChanged: onChanged,
-      value: currentValue, // Set current selected value
-      items: items.map<DropdownMenuItem<String>>((String value) {
+      value: currentValue,
+      // Set current selected value
+      items: items!.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Row(
@@ -53,7 +52,7 @@ Widget buildDropdown({
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Image.asset(
-                  assetIconPath,
+                  assetIconPath!,
                   color: const Color.fromRGBO(134, 134, 134, 1),
                 ),
               ),
@@ -67,7 +66,8 @@ Widget buildDropdown({
           ),
         );
       }).toList(),
-      underline: Container(), // Remove the underline
+      underline: Container(),
+      // Remove the underline
       icon: const SizedBox.shrink(), // Remove the dropdown arrow icon
     ),
   );

@@ -10,7 +10,7 @@ class WelcomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       // color: Colors.blue,
-      height: 450,
+      height: MediaQuery.of(context).size.height*0.47,
       child: Stack(
         children: [
           Positioned(
@@ -30,7 +30,16 @@ class WelcomeWidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: AppColors.NavBarColor, // Orange background
+                color: AppColors.NavBarColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.orange.withOpacity(0.5), // اللون البرتقالي مع الشفافية
+                    spreadRadius: 8, // مدى انتشار الظل
+                    blurRadius: 20, // مدى ضبابية الظل
+                    offset: Offset(0, 3), // إزاحة الظل (X:0, Y:3)
+                  ),
+                ],
+// Orange background
               ),
               child: Stack(
                 alignment: Alignment.center,

@@ -11,7 +11,6 @@ class TicketPage extends StatefulWidget {
 }
 
 class _TicketPageState extends State<TicketPage> {
-
   MetroRouteFinder routeFinder = MetroRouteFinder();
   bool showContainers = false;
   String? fromPlace;
@@ -20,19 +19,20 @@ class _TicketPageState extends State<TicketPage> {
   String fareMessage = '';
   int stationCount = 0;
   int time = 0;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadMetroStations();
   }
+
   Future<void> loadMetroStations() async {
     await routeFinder.loadStations();
     setState(() {}); // تحديث الواجهة بعد تحميل المحطات
   }
-  void calculateFare() {
 
-    if (fromPlace == null || toPlace == null || numofpeople == null  || toPlace == fromPlace) {
+  void calculateFare() {
+    if (fromPlace == null || toPlace == null || numofpeople == null || toPlace == fromPlace) {
       setState(() {
         showDialog(
           context: context,
@@ -58,7 +58,7 @@ class _TicketPageState extends State<TicketPage> {
     routeFinder.getStationsBetween(fromPlace!, toPlace!);
 
     int fromIndex = routeFinder.stationsname.toList().indexOf(fromPlace!);
-    int toIndex =  routeFinder.stationsname.toList().indexOf(toPlace!);
+    int toIndex = routeFinder.stationsname.toList().indexOf(toPlace!);
 
     if (fromIndex == -1 || toIndex == -1) {
       setState(() {
@@ -67,7 +67,7 @@ class _TicketPageState extends State<TicketPage> {
       return;
     }
 
-    int calculatedStationCount = routeFinder.routeStations1.length + routeFinder.routeStations2.length;;
+    int calculatedStationCount = routeFinder.routeStations1.length + routeFinder.routeStations2.length;
     int price;
     if (calculatedStationCount == 0) {
       setState(() {
@@ -98,218 +98,228 @@ class _TicketPageState extends State<TicketPage> {
       time = (stationCount * 2).round(); // Update the time estimation
     });
     showContainers = true;
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavBar2(index: 5),
-      body: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 0,
-            bottom: 600,
-            left: 0,
-            right: 0,
-            child: Image.asset(
-                'assets/images/image_inticket.png', fit: BoxFit.fill),
-          ),
-          Positioned(
-            right: 20,
-            left: 20,
-            top: 100,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(232, 232, 232, 1),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-              ),
-              height: 900,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 30),
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 7, 27, 97),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 10,
-                          spreadRadius: 2,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+        body: Stack(
+          children: <Widget>[
+            Positioned(
+              top: 0,
+              bottom: 500,
+              left: 0,
+              right: 0,
+              child: Image.asset(
+                  'assets/images/image_inticket.png', fit: BoxFit.fill),
+            ),
+            Positioned(
+              right: 10,
+              left: 10,
+              top: 100,
+              bottom: 0,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(232, 232, 232, 1),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
                     ),
-                    child: Image.asset('assets/photoAndIcon/ic_ticket.png'),
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'حساب سعر التذكرة',
-                    style: TextStyle(
-                        color:const Color.fromARGB(255, 7, 27, 97),
-                       fontSize: 30),
-                  ),
-                  const SizedBox(height: 20),
-                  routeFinder.stationsname.isNotEmpty
-                      ? buildDropdown(
-                    hintText: "من",
-                    items: routeFinder.stationsname.toList(),
-                    iconTextSpace: 100.0,
-                    assetIconPath: 'assets/photoAndIcon/ic_lines.png',
-                    iconPadding: 0.0,
-                    dropdownWidth: MediaQuery.of(context).size.width,
-                    currentValue: fromPlace,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        fromPlace = newValue;
-                      });
-                    },
-                  )
-                      : const CircularProgressIndicator(),
-                  const SizedBox(height: 20),
-                  routeFinder.stationsname.isNotEmpty
-                      ? buildDropdown(
-                    hintText: "الي",
-                    items: routeFinder.stationsname.toList(),
-                    iconTextSpace: 300.0,
-                    assetIconPath: 'assets/photoAndIcon/ic_lines.png',
-                    iconPadding: 10.0,
-                    dropdownWidth: MediaQuery.of(context).size.width *0.9,
-                    currentValue: toPlace,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        toPlace = newValue;
-                      });
-                    },
-                  )
-                      : const CircularProgressIndicator(),
-                  const SizedBox(height: 20),
-                  buildDropdown(
-                    hintText: "عداد الافراد",
-                    items: ['1', '2', '3', '4'],
-                    iconTextSpace: 220.0,
-                    assetIconPath: 'assets/photoAndIcon/ic_lines.png',
-                    iconPadding: 10.0,
-                    dropdownWidth: MediaQuery.of(context).size.width * 0.9,
-                    currentValue: numofpeople,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        numofpeople = newValue;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 30),
-                  FilledButton(
-                    onPressed: () {
-                      calculateFare() ; // Recalculate the fare
-                        setState(() {
-                        });
-                      } ,
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(const Size(370, 60)),
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromARGB(255, 7, 27, 97)),
-                      elevation: MaterialStateProperty.all(10),
-                      overlayColor: MaterialStateProperty.all(Color.fromARGB(
-                          255, 0, 0, 0)),
-                      shadowColor: MaterialStateProperty.all(Color.fromARGB(
-                          255, 0, 0, 0)),
-                    ),
-                    child: const Text('احسب', style: TextStyle(fontSize: 25)),
-                  ),
-                  Visibility(
-                    visible: showContainers,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 40),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              height: 75,
-                              width: 200,
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 40),
-                                  Text(
-                                    '$stationCount \nمحطات',
-                                    style: const TextStyle(fontSize: 20),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(width: 40),
-                                  Image.asset(
-                                      'assets/photoAndIcon/ic-metro.png'),
-                                ],
-                              ),
+                  // قم بإزالة ارتفاع الحاوية
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // اجعل الحاوية تأخذ الحجم المطلوب
+                    children: [
+                      const SizedBox(height: 30),
+                      Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 7, 27, 97),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                              offset: const Offset(0, 4),
                             ),
-                            const SizedBox(width: 20),
+                          ],
+                        ),
+                        child: Image.asset('assets/photoAndIcon/ic_ticket.png'),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'حساب سعر التذكرة',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 7, 27, 97),
+                            fontSize: 30),
+                      ),
+                      const SizedBox(height: 20),
+                      routeFinder.stationsname.isNotEmpty
+                          ? buildDropdown(
+                        hintText: "من",
+                        items: routeFinder.stationsname.toList(),
+                        iconTextSpace: 100.0,
+                        assetIconPath: 'assets/photoAndIcon/ic_lines.png',
+                        iconPadding: 0.0,
+                        dropdownWidth: MediaQuery.of(context).size.width,
+                        currentValue: fromPlace,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            fromPlace = newValue;
+                          });
+                        },
+                      )
+                          : const CircularProgressIndicator(),
+                      const SizedBox(height: 20),
+                      routeFinder.stationsname.isNotEmpty
+                          ? buildDropdown(
+                        hintText: "الي",
+                        items: routeFinder.stationsname.toList(),
+                        iconTextSpace: 300.0,
+                        assetIconPath: 'assets/photoAndIcon/ic_lines.png',
+                        iconPadding: 10.0,
+                        dropdownWidth: MediaQuery.of(context).size.width * 0.9,
+                        currentValue: toPlace,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            toPlace = newValue;
+                          });
+                        },
+                      )
+                          : const CircularProgressIndicator(),
+                      const SizedBox(height: 20),
+                      buildDropdown(
+                        hintText: "عداد الافراد",
+                        items: ['1', '2', '3', '4'],
+                        iconTextSpace: 220.0,
+                        assetIconPath: 'assets/photoAndIcon/ic_lines.png',
+                        iconPadding: 10.0,
+                        dropdownWidth: MediaQuery.of(context).size.width * 0.9,
+                        currentValue: numofpeople,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            numofpeople = newValue;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      FilledButton(
+                        onPressed: () {
+                          calculateFare(); // Recalculate the fare
+                          setState(() {});
+                        },
+                        style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all(const Size(370, 60)),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 7, 27, 97)),
+                          elevation: MaterialStateProperty.all(10),
+                          overlayColor: MaterialStateProperty.all(Color.fromARGB(
+                              255, 0, 0, 0)),
+                          shadowColor: MaterialStateProperty.all(Color.fromARGB(
+                              255, 0, 0, 0)),
+                        ),
+                        child: const Text('احسب', style: TextStyle(fontSize: 25)),
+                      ),
+                      Visibility(
+                        visible: showContainers,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  height: 75,
+                                  width: MediaQuery.of(context).size.width*0.4,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        '$stationCount \nمحطات',
+                                        style: const TextStyle(fontSize: 20),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Image.asset(
+                                          'assets/photoAndIcon/ic-metro.png'),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  height: 75,
+                                  width: MediaQuery.of(context).size.width*0.4,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        '$time \nدقائق',
+                                        style: const TextStyle(fontSize: 20),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Icon(Icons.timer_sharp),
+
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 40),
                             Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 100,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(25),
+                                borderRadius: BorderRadius.circular(30),
                               ),
-                              height: 75,
-                              width: 140,
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 20),
-                                  Text(
-                                    "$time \nدقيقة",
-                                    style: const TextStyle(fontSize: 20),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(width: 40),
-                                  Icon(Icons.access_time_outlined, size: 30),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: 'المبلغ اللي هتدفعه هو ',
+                                            style: TextStyle(fontSize: 20), // ستايل النص الأساسي
+                                          ),
+                                          TextSpan(
+                                            text: '${fareMessage}', // النص اللي عايز تغيّر لونه
+                                            style: TextStyle(color: Color.fromARGB(
+                                                255, 255, 141, 0),
+                                                 fontSize: 25), // ستايل النص المتغير
+                                          ),
+                                        ],
+                                      ),
+                                    )  ,
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 30),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          height: 100,
-                          width: 360,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text('..المبلغ اللي هتدفعه ',
-                                    style: TextStyle(fontSize: 20)),
-                                const SizedBox(height: 10),
-                                Text(fareMessage,
-                                    style: const TextStyle(fontSize: 25)),
-                              ],
-
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
   }
 }
