@@ -10,6 +10,7 @@ Widget buildDropdown({
   double? dropdownWidth,
   String? currentValue,
   ValueChanged<String?>? onChanged,
+  required BuildContext context
 }) {
   return Container(
     width: dropdownWidth,
@@ -56,7 +57,7 @@ Widget buildDropdown({
                   color: const Color.fromRGBO(134, 134, 134, 1),
                 ),
               ),
-              const SizedBox(width: 190.0), // Space between icon and text
+              SizedBox(width: MediaQuery.of(context!).size.width * 0.1), // Space between icon and text
               Text(
                 value,
                 textAlign: TextAlign.right,

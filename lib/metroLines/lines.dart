@@ -57,19 +57,22 @@ class _LinePageState extends State<LinePage> {
     return Scaffold(
       bottomNavigationBar: BottomNavBar2(index: 4),
       backgroundColor: const Color.fromRGBO(232, 232, 232, 1),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 350,
-            width: 500,
-            child: Image.asset('assets/images/image_allline.png', fit: BoxFit.cover),
-          ),
-          _buildMapSection(),
-          const SizedBox(height: 20),
-          _buildDropdownSection(),
-          const SizedBox(height: 20),
-          _buildStationList(),
-        ],
+      body: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 350,
+              width: 500,
+              child: Image.asset('assets/images/image_allline.png', fit: BoxFit.cover),
+            ),
+            _buildMapSection(),
+            const SizedBox(height: 20),
+            _buildDropdownSection(),
+            const SizedBox(height: 20),
+            _buildStationList(),
+          ],
+        ),
       ),
     );
   }
@@ -223,7 +226,7 @@ class _LinePageState extends State<LinePage> {
           ),
           const SizedBox(width: 210.0),
           Padding(
-            padding: const EdgeInsets.only(right: 15),
+            padding: const EdgeInsets.only(right: 5),
             child: Text(
               value,
               style: const TextStyle(fontSize: 25, color: Colors.black),
@@ -243,7 +246,7 @@ class _LinePageState extends State<LinePage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(30),
         ),
-        height: 320,
+        height: MediaQuery.of(context).size.height * 0.28,
         width: 400,
         child: ListView.separated(
           itemCount: stations.length,

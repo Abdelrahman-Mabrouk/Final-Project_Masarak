@@ -161,12 +161,13 @@ class _TicketPageState extends State<TicketPage> {
                       const SizedBox(height: 20),
                       routeFinder.stationsname.isNotEmpty
                           ? buildDropdown(
+                        context: context,
                         hintText: "من",
                         items: routeFinder.stationsname.toList(),
                         iconTextSpace: 100.0,
                         assetIconPath: 'assets/photoAndIcon/ic_lines.png',
-                        iconPadding: 0.0,
-                        dropdownWidth: MediaQuery.of(context).size.width,
+                        iconPadding: 10.0,
+                        dropdownWidth: MediaQuery.of(context).size.width * 0.9,
                         currentValue: fromPlace,
                         onChanged: (String? newValue) {
                           setState(() {
@@ -178,6 +179,7 @@ class _TicketPageState extends State<TicketPage> {
                       const SizedBox(height: 20),
                       routeFinder.stationsname.isNotEmpty
                           ? buildDropdown(
+                        context: context,
                         hintText: "الي",
                         items: routeFinder.stationsname.toList(),
                         iconTextSpace: 300.0,
@@ -194,6 +196,7 @@ class _TicketPageState extends State<TicketPage> {
                           : const CircularProgressIndicator(),
                       const SizedBox(height: 20),
                       buildDropdown(
+                        context: context,
                         hintText: "عداد الافراد",
                         items: ['1', '2', '3', '4'],
                         iconTextSpace: 220.0,
