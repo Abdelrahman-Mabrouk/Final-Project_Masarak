@@ -1,31 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../Map/metro_route_finder.dart';
 import '../constants.dart';
 
 class FromToContainer extends StatefulWidget {
   final MetroRouteFinder routeFinder;
 
-  FromToContainer({super.key, required this.routeFinder}); // إضافة الفاصلة هنا
+  FromToContainer({super.key, required this.routeFinder});
 
   @override
   State<FromToContainer> createState() => _FromToContainerState();
 }
 
 class _FromToContainerState extends State<FromToContainer> {
+  void _swapStations() {
+    setState(() {
+      // تبديل محطة البداية والنهاية
+      final temp = widget.routeFinder.startStation;
+      widget.routeFinder.startStation = widget.routeFinder.endStation;
+      widget.routeFinder.endStation = temp;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 150,
+      height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15), // لون الظل مع الشفافية
-            spreadRadius: 9, // مدى انتشار الظل
-            blurRadius: 15, // مدى ضبابية الظل
-            offset: Offset(0, 3), // إزاحة الظل (X:0, Y:3)
+            color: Colors.black.withOpacity(0.15),
+            spreadRadius: 9,
+            blurRadius: 15,
+            offset: Offset(0, 3),
           ),
         ],
       ),
@@ -44,6 +54,14 @@ class _FromToContainerState extends State<FromToContainer> {
             stations: widget.routeFinder.stationsname.toList(),
           ),
           SizedBox(height: 8),
+
+          // زر تبديل المحطات
+          IconButton(
+            icon: Icon(Icons.swap_vert), // أيقونة تبديل
+            onPressed: _swapStations, // استدعاء الدالة لتبديل المحطات
+          ),
+
+          SizedBox(height: 8),
           _FromToField(
             label: 'إلى',
             hintText: "اختر محطة الوصول",
@@ -60,6 +78,7 @@ class _FromToContainerState extends State<FromToContainer> {
     );
   }
 }
+
 
 class _FromToField extends StatelessWidget {
   final String label;
@@ -86,26 +105,33 @@ class _FromToField extends StatelessWidget {
         color: AppColors.homeBackgroundColor,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: DropdownButton<String>(
-        hint: Text(hintText),
-        value: value,
-        onChanged: onChanged,
-        isExpanded: true,
-        // اجعل القائمة المنسدلة تأخذ المساحة الكاملة
-        underline: SizedBox(),
-        // إزالة الخط السفلي
-        icon: Padding(
-          // إضافة padding للسهم
-          padding: const EdgeInsets.only(left: 8.0), // مسافة من اليسار للسهم
-          child: Icon(Icons.arrow_drop_down),
+      child: TypeAheadFormField<String?>(
+        textFieldConfiguration: TextFieldConfiguration(
+          controller: TextEditingController(text: value), // Display selected station
+          decoration: InputDecoration(
+            hintText: value != null && value!.isNotEmpty ? value : hintText, // Show selected station if exists
+            border: InputBorder.none,
+          ),
         ),
-        // السهم هنا
-        items: stations.map((station) {
-          return DropdownMenuItem<String>(
-            value: station,
-            child: Text(station),
+        suggestionsCallback: (pattern) {
+          return stations.where((station) =>
+              station.toLowerCase().contains(pattern.toLowerCase()));
+        },
+        itemBuilder: (context, suggestion) {
+          return ListTile(
+            title: Text(suggestion ?? ''),
           );
-        }).toList(),
+        },
+        onSuggestionSelected: (suggestion) {
+          onChanged?.call(suggestion);
+        },
+        noItemsFoundBuilder: (context) => SizedBox(
+          height: 50,
+          child: Center(child: Text('لا توجد محطات مطابقة')),
+        ),
+        getImmediateSuggestions: true,
+        hideOnEmpty: true,
+        hideSuggestionsOnKeyboardHide: false,
       ),
     );
   }

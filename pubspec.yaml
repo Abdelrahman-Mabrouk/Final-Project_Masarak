@@ -35,7 +35,7 @@ dependencies:
   location:
   http:
   geolocator:
-  dropdown_search: ^5.0.3
+  flutter_typeahead: ^4.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
