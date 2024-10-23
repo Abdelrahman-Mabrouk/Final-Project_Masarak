@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-
-class MetroRouteFinder  {
+class MetroRouteFinder {
   List stations = [];
-  Set <String> stationsname = {};
+  Set<String> stationsname = {};
   String? startStation;
   String? endStation;
   String? nameOftransferStation;
@@ -15,14 +14,16 @@ class MetroRouteFinder  {
   Map<String, List<int>> transferStations = {
     'العتبة': [2, 3],
     'الشهداء': [1, 2],
-    'ناصر': [1, 3],
+    'جمال عبد الناصر': [1, 3],
     'السادات': [1, 2]
   };
-  Map <int , String> nameOfLines={
-    1:"الخط الاول (حلوان, المرج الجديدة)",
-    2:"الخط الثاني (المنيب , شبرا)",
-    3:"الخط الثالث (عدلي منصور , محور روض الفرج)"
+
+  Map<int, String> nameOfLines = {
+    1: "الخط الاول (حلوان, المرج الجديدة)",
+    2: "الخط الثاني (المنيب , شبرا)",
+    3: "الخط الثالث (عدلي منصور , محور روض الفرج)"
   };
+
   bool isTransferStation = false;
 
   Color getLineColorByName(String lineName) {
@@ -37,58 +38,87 @@ class MetroRouteFinder  {
     }
   }
 
-  // قراءة ملف JSON للمحطات
+  // Load stations from a JSON file
   Future<void> loadStations() async {
     String data = await rootBundle.loadString('assets/jsonFiles/metroLinesData.json');
-
     stations = jsonDecode(data);
-    for(var station in stations){
+    for (var station in stations) {
       stationsname.add(station['name']);
     }
   }
 
+  // Check if two stations are on the same line
+  int? areStationsOnSameLine(String start, String end) {
+    List<int> startLines = [];
+    List<int> endLines = [];
 
-  // دالة لحساب المحطات بين خطين
+    // العثور على الخطوط التي توجد بها المحطتين
+    for (var station in stations) {
+      if (station['name'] == start) {
+        if (station['lines'] != null) {
+          startLines = station['lines'].cast<int>();
+        }
+      }
+      if (station['name'] == end) {
+        if (station['lines'] != null) {
+          endLines = station['lines'].cast<int>();
+        }
+      }
+    }
+
+    // التحقق من وجود خط مشترك بين المحطتين
+    for (var line in startLines) {
+      if (endLines.contains(line)) {
+        return line; // إرجاع الخط المشترك
+      }
+    }
+
+    return null; // إذا لم يكن هناك خط مشترك
+  }
+
   void getStationsBetween(String start, String end) {
     routeStations1.clear();
     routeStations2.clear();
     isTransferStation = false;
-    List<String> result = [];
 
+    // تحديد الخط المشترك بين المحطتين
+    int? commonLine = areStationsOnSameLine(start, end);
 
-    // تحديد الخطين للمحطتين
+    // التحقق مما إذا كان هناك خط مشترك
+    if (commonLine != null) {
+      // إذا كان هناك خط مشترك، استخدمه لحساب المسار
+      routeStations1 = getStationsBetweenSameLine(start, end, commonLine);
+      return; // إنهاء الدالة هنا بدون البحث عن محطات تحويل
+    }
+
+    // إذا لم يكن هناك خط مشترك، نتابع البحث عن محطة تحويل
+    String? transferStation;
     for (var station in stations) {
       if (station['name'] == start) startLine = station['line'];
       if (station['name'] == end) endLine = station['line'];
     }
 
-    if (startLine == endLine) {
-      routeStations1 = getStationsBetweenSameLine(start, end, startLine!);
-    } else {
-      // البحث عن محطة تحويل بين الخطين
-      String? transferStation;
-      for (var entry in transferStations.entries) {
-        if (entry.value.contains(startLine) && entry.value.contains(endLine)) {
-          transferStation = entry.key; // محطة التحويل التي تحتوي على الخطين
-          break;
-        }
+    // البحث عن محطة تحويل بين الخطين
+    for (var entry in transferStations.entries) {
+      if (entry.value.contains(startLine) && entry.value.contains(endLine)) {
+        transferStation = entry.key;
+        break;
       }
+    }
 
-      if (transferStation != null) {
-        isTransferStation = true;
-        nameOftransferStation = transferStation;
-        routeStations1.addAll(
-            getStationsBetweenSameLine(start, transferStation, startLine!));
-        routeStations2.addAll(
-            getStationsBetweenSameLine(end, transferStation, endLine!));
-
-      }
+    if (transferStation != null) {
+      isTransferStation = true;
+      nameOftransferStation = transferStation;
+      // حساب المسار بين البداية ومحطة التحويل
+      routeStations1.addAll(getStationsBetweenSameLine(start, transferStation, startLine!));
+      // حساب المسار بين النهاية ومحطة التحويل
+      routeStations2.addAll(getStationsBetweenSameLine(end, transferStation, endLine!));
     }
   }
 
-  // دالة لحساب المحطات بين محطتين على نفس الخط
-  List<String> getStationsBetweenSameLine(String start, String end, int line) {
 
+  // Get stations between two points on the same line
+  List<String> getStationsBetweenSameLine(String start, String end, int line) {
     List<String> result = [];
     bool inRange = false;
     for (var station in stations) {
@@ -99,18 +129,15 @@ class MetroRouteFinder  {
           inRange = !inRange;
         } else if (inRange) {
           result.add(station['name']);
-
         }
       }
     }
 
-
-    if(result[0]==endStation || result[0]==end ){
-      result= result.reversed.toList();}
-
+    // Reverse the result if needed
+    if (result[0] == endStation || result[0] == end) {
+      result = result.reversed.toList();
+    }
 
     return result;
   }
-
-
 }
