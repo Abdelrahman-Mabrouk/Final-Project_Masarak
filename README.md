@@ -46,6 +46,4 @@ Resources Needed
 
 Hardware/Software:
 - A development environment with Flutter and Dart installed.
-- A database system like SQLite or Firebase for storing metro data.
 - Devices for testing (Android/iOS phones).
-- Google Cloud API.
