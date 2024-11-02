@@ -54,41 +54,76 @@ class MetroRouteFinder  {
     routeStations2.clear();
     isTransferStation = false;
     List<String> result = [];
-
-
-    // تحديد الخطين للمحطتين
-    for (var station in stations) {
-      if (station['name'] == start) startLine = station['line'];
-      if (station['name'] == end) endLine = station['line'];
+    if(transferStations.containsKey(start) && transferStations.containsKey(end)){
+      if(transferStations[end]![0]  == transferStations[start]![0] || transferStations[end]![0]  == transferStations[start]![1]){
+        routeStations1 = getStationsBetweenSameLine(start , end, transferStations[end]![0]);
+      }
+      else if(transferStations[end]![1]  == transferStations[start]![1] || transferStations[end]![1]  == transferStations[start]![0]){
+        routeStations1 = getStationsBetweenSameLine(start , end, transferStations[end]![1]);
+      }
+      else{
+        searchTransferStation( start ,  end);
+      }
     }
-
-    if (startLine == endLine) {
-      routeStations1 = getStationsBetweenSameLine(start, end, startLine!);
-    } else {
-      // البحث عن محطة تحويل بين الخطين
-      String? transferStation;
-      for (var entry in transferStations.entries) {
-        if (entry.value.contains(startLine) && entry.value.contains(endLine)) {
-          transferStation = entry.key; // محطة التحويل التي تحتوي على الخطين
-          break;
-        }
+    else if (transferStations.containsKey(start)) {
+      for (var station in stations) {
+        if (station['name'] == end) endLine = station['line'];
+      }
+      if (endLine == transferStations[start]![0] || endLine == transferStations[start]![1]) {
+        routeStations1 = getStationsBetweenSameLine(start , end, endLine !);
+      }
+      else{
+        searchTransferStation( start ,  end);
+      }
+    }
+    else if (transferStations.containsKey(end)) {
+      for (var station in stations) {
+        if (station['name'] == start) startLine = station['line'];
+      }
+      if (startLine == transferStations[end]![0] || startLine == transferStations[end]![1]) {
+        routeStations1 = getStationsBetweenSameLine(start , end, startLine !);
+      }
+      else {
+        searchTransferStation( start ,  end);
+      }
+    }
+    else {
+      // تحديد الخطين للمحطتين
+      for (var station in stations) {
+        if (station['name'] == start) startLine = station['line'];
+        if (station['name'] == end) endLine = station['line'];
       }
 
-      if (transferStation != null) {
-        isTransferStation = true;
-        nameOftransferStation = transferStation;
-        routeStations1.addAll(
-            getStationsBetweenSameLine(start, transferStation, startLine!));
-        routeStations2.addAll(
-            getStationsBetweenSameLine(end, transferStation, endLine!));
-
+      if (startLine == endLine) {
+        routeStations1 = getStationsBetweenSameLine(start, end, startLine!);
+      }
+      else {
+        searchTransferStation(start, end);
       }
     }
   }
+  void searchTransferStation(String start , String end){
+    // البحث عن محطة تحويل بين الخطين
+    String? transferStation;
+    for (var entry in transferStations.entries) {
+      if (entry.value.contains(startLine) &&
+          entry.value.contains(endLine)) {
+        transferStation = entry.key; // محطة التحويل التي تحتوي على الخطين
+        break;
+      }
+    }
 
+    if (transferStation != null) {
+      isTransferStation = true;
+      nameOftransferStation = transferStation;
+      routeStations1.addAll(
+          getStationsBetweenSameLine(start, transferStation, startLine!));
+      routeStations2.addAll(
+          getStationsBetweenSameLine(transferStation,end, endLine!));
+    }
+  }
   // دالة لحساب المحطات بين محطتين على نفس الخط
   List<String> getStationsBetweenSameLine(String start, String end, int line) {
-
     List<String> result = [];
     bool inRange = false;
     for (var station in stations) {
@@ -99,16 +134,12 @@ class MetroRouteFinder  {
           inRange = !inRange;
         } else if (inRange) {
           result.add(station['name']);
-
         }
       }
     }
 
-
-    if(result[0]==endStation || result[0]==end ){
-      result= result.reversed.toList();}
-
-
+    if(result[0] == endStation) result = result.reversed.toList();
+    else if (result[0] == end && end != endLine) result = result.reversed.toList();
     return result;
   }
 
